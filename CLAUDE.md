@@ -5,6 +5,20 @@ deployment (customer TjDeeD Technology). Read this file before creating, editing
 any template here — it captures the established design system so it doesn't need to be
 re-derived from scratch (and so we don't re-read dozens of files just to learn the conventions).
 
+## Repo hosting: public GitHub repo + GitHub Pages live previews
+
+This is pushed to `https://github.com/Asemzaidan2003/Ivanti-ITSM-Emial-Templates` and is
+**public** (deliberately switched from private, with the user's explicit sign-off) specifically
+so GitHub Pages could be enabled — GitHub's Free plan does not support Pages on private repos at
+all, there is no private-Pages option outside paid plans. Pages is enabled serving `main`
+branch, root path, at `https://asemzaidan2003.github.io/Ivanti-ITSM-Emial-Templates/`.
+
+`index.html` at the repo root is the Pages entry point — a plain browsing index (not a Spectrum
+template) linking to every template file, grouped by module. **Whenever a template is added,
+removed, or renamed, update `index.html`'s link list to match**, or the live index will silently
+drift out of sync with what's actually in the repo. If a future design folder is added, give it
+its own section in `index.html` too.
+
 ## Top-level structure: this repo holds multiple *designs*
 
 The root directory is a container for **designs**, not templates directly. Each design is its

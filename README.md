@@ -14,6 +14,16 @@ later without touching what's already here (see [Roadmap](#roadmap)).
 > example-data cast, etc.), see [`CLAUDE.md`](./CLAUDE.md) — this README is the human-facing
 > overview, that file is the detailed reference used when building new templates.
 
+## Live previews
+
+🔗 **[asemzaidan2003.github.io/Ivanti-ITSM-Emial-Templates](https://asemzaidan2003.github.io/Ivanti-ITSM-Emial-Templates/)**
+
+GitHub Pages serves every template as a live, rendered HTML page — click through the index above
+to browse them by module, or jump straight to one, e.g.
+[Incident → New Ticket Created](https://asemzaidan2003.github.io/Ivanti-ITSM-Emial-Templates/Spectrum/Incident/incident-email-template.html).
+(Markdown on GitHub can't render styled HTML inline — this is why the preview lives on Pages
+instead of embedded in this file.)
+
 ## Repository structure
 
 ```

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ivanti ITSM Email Templates — Live Previews</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #4f46e5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1220;
+      --card: #111827;
+      --border: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #818cf8;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Helvetica, Arial, sans-serif;
+    padding: 40px 20px 80px 20px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  h1 { font-size: 26px; margin: 0 0 6px 0; }
+  p.lead { color: var(--muted); margin: 0 0 32px 0; font-size: 14px; line-height: 22px; }
+  .module {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .module h2 {
+    font-size: 15px;
+    margin: 0 0 12px 0;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
+  @media (max-width: 640px) { ul { grid-template-columns: 1fr; } }
+  li a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    padding: 6px 0;
+    border-bottom: 1px dashed transparent;
+  }
+  li a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 40px; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ivanti ITSM Email Templates</h1>
+  <p class="lead">
+    Live previews of every template in the <strong>Spectrum</strong> design. Click any item to
+    render the actual HTML email in your browser. Source: <a href="https://github.com/Asemzaidan2003/Ivanti-ITSM-Emial-Templates">GitHub repo</a>.
+  </p>
+
+  <div class="module">
+    <h2>Incident (11)</h2>
+    <ul>
+      <li><a href="Spectrum/Incident/incident-email-template.html">New Ticket Created</a></li>
+      <li><a href="Spectrum/Incident/incident-team-assignment.html">Team Queue Assignment</a></li>
+      <li><a href="Spectrum/Incident/incident-reassigned-owner.html">Reassigned — Owner</a></li>
+      <li><a href="Spectrum/Incident/incident-reassigned-team.html">Reassigned — Team</a></li>
+      <li><a href="Spectrum/Incident/incident-status-waiting-customer.html">Status — Waiting for Customer</a></li>
+      <li><a href="Spectrum/Incident/incident-status-on-hold-vendor.html">Status — On Hold (Vendor)</a></li>
+      <li><a href="Spectrum/Incident/incident-status-resolved.html">Status — Resolved</a></li>
+      <li><a href="Spectrum/Incident/incident-status-reopened.html">Status — Reopened</a></li>
+      <li><a href="Spectrum/Incident/incident-status-closed.html">Status — Closed</a></li>
+      <li><a href="Spectrum/Incident/incident-status-cancelled.html">Status — Cancelled</a></li>
+      <li><a href="Spectrum/Incident/incident-feedback-survey.html">CSAT Feedback Survey</a></li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h2>Service Request (12)</h2>
+    <ul>
+      <li><a href="Spectrum/Service%20Request/service-request-email-template-customer.html">Submitted — Customer View</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-email-template-analyst.html">Assigned — Analyst View</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-team-assignment.html">Team Queue Assignment</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-reassigned-owner.html">Reassigned — Owner</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-reassigned-team.html">Reassigned — Team</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-status-waiting-customer.html">Status — Waiting for Customer</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-status-waiting-development.html">Status — Waiting for Development</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-status-on-hold.html">Status — On Hold</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-status-fulfilled.html">Status — Fulfilled</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-status-closed.html">Status — Closed</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-status-cancelled.html">Status — Cancelled</a></li>
+      <li><a href="Spectrum/Service%20Request/service-request-feedback-survey.html">CSAT Feedback Survey</a></li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h2>Approval (6)</h2>
+    <ul>
+      <li><a href="Spectrum/Approval/approval-request-customer.html">Requested — Customer View</a></li>
+      <li><a href="Spectrum/Approval/approval-request-approver.html">Requested — Approver View</a></li>
+      <li><a href="Spectrum/Approval/approval-approved-customer.html">Approved</a></li>
+      <li><a href="Spectrum/Approval/approval-rejected-customer.html">Rejected</a></li>
+      <li><a href="Spectrum/Approval/approval-timedout-customer.html">Timed Out</a></li>
+      <li><a href="Spectrum/Approval/approval-cancelled-customer.html">Cancelled</a></li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h2>Escalation (4)</h2>
+    <ul>
+      <li><a href="Spectrum/Escalation/escalation-level-1.html">Level 1 — Team Lead</a></li>
+      <li><a href="Spectrum/Escalation/escalation-level-2.html">Level 2 — Manager</a></li>
+      <li><a href="Spectrum/Escalation/escalation-level-3.html">Level 3 — Director</a></li>
+      <li><a href="Spectrum/Escalation/sla-breach.html">SLA Breach</a></li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h2>Task Management (6)</h2>
+    <ul>
+      <li><a href="Spectrum/Task%20Management/task-email-template-analyst.html">Assigned to You</a></li>
+      <li><a href="Spectrum/Task%20Management/task-team-assignment.html">Team Queue Assignment</a></li>
+      <li><a href="Spectrum/Task%20Management/task-status-completed.html">Status — Completed</a></li>
+      <li><a href="Spectrum/Task%20Management/task-status-overdue.html">Status — Overdue</a></li>
+      <li><a href="Spectrum/Task%20Management/task-status-reassigned.html">Status — Reassigned</a></li>
+      <li><a href="Spectrum/Task%20Management/task-status-cancelled.html">Status — Cancelled</a></li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h2>Asset Management (5)</h2>
+    <ul>
+      <li><a href="Spectrum/Asset%20Management/asset-assigned-to-you.html">Assigned to You</a></li>
+      <li><a href="Spectrum/Asset%20Management/asset-warranty-expiring.html">Warranty Expiring</a></li>
+      <li><a href="Spectrum/Asset%20Management/asset-retirement-notice.html">Retirement Notice</a></li>
+      <li><a href="Spectrum/Asset%20Management/asset-audit-required.html">Audit Confirmation Required</a></li>
+      <li><a href="Spectrum/Asset%20Management/asset-returned-confirmation.html">Returned Confirmation</a></li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h2>Knowledge Management (4)</h2>
+    <ul>
+      <li><a href="Spectrum/Knowledge%20Management/knowledge-article-published.html">Article Published</a></li>
+      <li><a href="Spectrum/Knowledge%20Management/knowledge-article-review-due.html">Review Due</a></li>
+      <li><a href="Spectrum/Knowledge%20Management/knowledge-article-approval-needed.html">Approval Needed</a></li>
+      <li><a href="Spectrum/Knowledge%20Management/knowledge-article-retired.html">Article Retired</a></li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h2>Problem Management (3)</h2>
+    <ul>
+      <li><a href="Spectrum/Problem%20Management/problem-record-created.html">Problem Record Created</a></li>
+      <li><a href="Spectrum/Problem%20Management/problem-known-error-published.html">Known Error Published</a></li>
+      <li><a href="Spectrum/Problem%20Management/problem-resolved-closed.html">Resolved &amp; Closed</a></li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h2>Maintenance Operations (5)</h2>
+    <ul>
+      <li><a href="Spectrum/Maintenance%20Operations/scheduled-maintenance-notice.html">Scheduled Notice</a></li>
+      <li><a href="Spectrum/Maintenance%20Operations/maintenance-reminder-24h.html">24-Hour Reminder</a></li>
+      <li><a href="Spectrum/Maintenance%20Operations/maintenance-in-progress.html">In Progress</a></li>
+      <li><a href="Spectrum/Maintenance%20Operations/maintenance-completed.html">Completed</a></li>
+      <li><a href="Spectrum/Maintenance%20Operations/maintenance-rescheduled.html">Rescheduled</a></li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h2>Feedback (3)</h2>
+    <ul>
+      <li><a href="Spectrum/Feedback/csat-reminder.html">CSAT Reminder</a></li>
+      <li><a href="Spectrum/Feedback/survey-completed.html">Survey Completed</a></li>
+      <li><a href="Spectrum/Feedback/low-satisfaction-alert.html">Low Satisfaction Alert</a></li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h2>Employee (1)</h2>
+    <ul>
+      <li><a href="Spectrum/Employee/employee-welcome-new-user.html">Welcome — New User Created</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    Internal template library for TjDeeD Technology's Ivanti Neurons for ITSM deployment.
+  </footer>
+</div>
+</body>
+</html>
