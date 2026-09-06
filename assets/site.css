@@ -46,6 +46,13 @@ body {
 }
 
 a { color: inherit; text-decoration: none; }
+a, button, select, .group-btn, .design-card { cursor: pointer; }
+
+:focus-visible {
+  outline: 2px solid var(--accent-solid);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
 
 img, iframe { max-width: 100%; }
 
@@ -387,18 +394,47 @@ img, iframe { max-width: 100%; }
   flex: 1;
 }
 .design-card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+
+/* The card's CTA is styled as an unmistakable button, not a plain text link —
+   the whole card is clickable, but this makes the "next step" explicit. */
 .design-card .go {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
   font-size: 13.5px;
   font-weight: 700;
-  color: var(--accent-solid);
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2) 55%, var(--accent-3));
+  padding: 11px 18px;
+  border-radius: 999px;
+  width: 100%;
+  transition: filter 0.15s ease, transform 0.15s ease;
 }
-.design-card:hover .go { text-decoration: underline; }
+.design-card:hover .go { filter: brightness(1.08); }
+.design-card:active .go { transform: scale(0.98); }
 
 .design-card.coming-soon {
-  opacity: 0.6;
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.design-card.coming-soon:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border);
+}
+.design-card.coming-soon .thumb { filter: grayscale(1); }
+.design-card.coming-soon .body::after {
+  content: "🔒 Not available yet";
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-faint);
+  text-align: center;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px dashed var(--border);
 }
 .design-card.coming-soon .thumb {
   display: flex;
@@ -483,29 +519,47 @@ img, iframe { max-width: 100%; }
   padding: 20px 14px 60px;
   overflow-y: auto;
 }
+.nav-hint {
+  margin: 0 2px 16px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
 .module-group { margin-bottom: 6px; }
 .module-group .group-btn {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 10px 12px;
+  gap: 10px;
+  padding: 11px 12px;
   border-radius: var(--radius-sm);
   font-size: 13.5px;
   font-weight: 700;
   color: var(--text);
-  background: transparent;
-  border: 0;
+  background: var(--surface-2);
+  border: 1px solid transparent;
   cursor: pointer;
   text-align: left;
 }
-.module-group .group-btn:hover { background: var(--surface-2); }
+.module-group .group-btn:hover { border-color: var(--border); filter: brightness(0.98); }
+.module-group.open .group-btn { border-color: var(--border); }
+.module-group .group-btn .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.module-group .group-btn .label { flex: 1; }
 .module-group .group-btn .chip {
   font-size: 10px;
   font-weight: 700;
   color: var(--text-faint);
-  background: var(--surface-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 999px;
   padding: 2px 7px;
 }
@@ -547,8 +601,13 @@ img, iframe { max-width: 100%; }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
+}
+.preview-caption {
+  margin: 0 0 16px;
+  font-size: 12.5px;
+  color: var(--text-faint);
 }
 .preview-toolbar .title {
   font-size: 15px;
@@ -599,6 +658,15 @@ img, iframe { max-width: 100%; }
     display: block;
     padding: 16px 20px 0;
     background: var(--bg-elevated);
+  }
+  .mobile-select label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 6px;
   }
   .mobile-select select {
     width: 100%;

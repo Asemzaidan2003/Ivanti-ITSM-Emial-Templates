@@ -41,17 +41,26 @@
   </section>
 
   <div class="mobile-select">
+    <label for="mobileSelect">Jump to a template</label>
     <select id="mobileSelect" aria-label="Select a template"></select>
   </div>
 
   <section class="browser-body">
-    <aside class="module-nav" id="moduleNav"></aside>
+    <aside class="module-nav" id="moduleNav">
+      <p class="nav-hint">👇 Click a module to expand it, then pick a template below to preview it on the right.</p>
+    </aside>
 
     <main class="preview-pane">
       <div class="preview-toolbar">
         <div class="title" id="toolbarTitle">Loading…</div>
-        <a class="open-link" id="openLink" href="#" target="_blank" rel="noopener">Open raw file ↗</a>
+        <a class="open-link" id="openLink" href="#" target="_blank" rel="noopener" title="Opens this exact email in its own browser tab, full size">
+          Open Full Size ↗
+        </a>
       </div>
+      <p class="preview-caption">
+        Live preview — this renders the actual template file, exactly as it would look pasted into
+        Ivanti Neurons for ITSM.
+      </p>
       <div class="preview-frame-wrap">
         <iframe id="previewFrame" title="Template preview"></iframe>
       </div>
@@ -172,12 +181,11 @@
     var group = document.createElement("div");
     group.className = "module-group";
     group.innerHTML =
-      '<button class="group-btn" type="button">' +
-        '<span>' + mod.name + '</span>' +
-        '<span style="display:flex; align-items:center; gap:8px;">' +
-          '<span class="chip">' + mod.items.length + '</span>' +
-          '<span class="chevron">▸</span>' +
-        '</span>' +
+      '<button class="group-btn" type="button" aria-expanded="false">' +
+        '<span class="dot" style="background:' + mod.color + '"></span>' +
+        '<span class="label">' + mod.name + '</span>' +
+        '<span class="chip">' + mod.items.length + '</span>' +
+        '<span class="chevron">▸</span>' +
       '</button>' +
       '<div class="items"></div>';
 
@@ -191,8 +199,10 @@
       itemsEl.appendChild(a);
     });
 
-    group.querySelector(".group-btn").addEventListener("click", function () {
-      group.classList.toggle("open");
+    var groupBtn = group.querySelector(".group-btn");
+    groupBtn.addEventListener("click", function () {
+      var isOpen = group.classList.toggle("open");
+      groupBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
     });
 
     moduleNav.appendChild(group);
@@ -229,11 +239,16 @@
     mobileSelect.value = moduleKey + "/" + file;
 
     document.querySelectorAll(".module-group .items a").forEach(function (a) {
-      a.classList.toggle("active", a.dataset.module === moduleKey && a.dataset.file === file);
+      var isActive = a.dataset.module === moduleKey && a.dataset.file === file;
+      a.classList.toggle("active", isActive);
+      if (isActive) a.scrollIntoView({ block: "nearest" });
     });
     document.querySelectorAll(".module-group").forEach(function (g) {
       var hasActive = g.querySelector("a.active");
-      if (hasActive) g.classList.add("open");
+      if (hasActive) {
+        g.classList.add("open");
+        g.querySelector(".group-btn").setAttribute("aria-expanded", "true");
+      }
     });
 
     if (!opts || !opts.skipHash) {
