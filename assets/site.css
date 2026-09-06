@@ -371,7 +371,14 @@ img, iframe { max-width: 100%; }
   left: 50%;
   width: 600px;
   height: 560px;
-  transform: translateX(-50%) scale(0.56);
+  /* Center with a plain negative margin (resolved at layout time, before any
+     transform) rather than translateX(-50%) — combining a percentage-based
+     translate with scale() in the same transform double-applies the scale
+     to the translate offset, throwing the centering off and cropping the
+     thumbnail to one side. Scale alone, from a top-center origin that
+     already sits on the centered box, keeps it centered at every zoom level. */
+  margin-left: -300px;
+  transform: scale(0.56);
   transform-origin: top center;
   border: 0;
   pointer-events: none;
