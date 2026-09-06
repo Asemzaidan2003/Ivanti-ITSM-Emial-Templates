@@ -13,29 +13,42 @@ so GitHub Pages could be enabled — GitHub's Free plan does not support Pages o
 all, there is no private-Pages option outside paid plans. Pages is enabled serving `main`
 branch, root path, at `https://asemzaidan2003.github.io/Ivanti-ITSM-Emial-Templates/`.
 
-The Pages entry point is a small portfolio site (owner: Asem Zaidan), separate from the
-templates themselves:
+The Pages entry point is a **real multi-page portfolio site** (owner: Asem Zaidan) — every
+section is its own directory with its own `index.html`, not one file doing client-side routing.
+This was deliberately rebuilt this way (moving off an earlier single-file `browse/spectrum.html`
+JS-driven browser) per explicit direction to treat it as a real product with a real directory
+structure, not "just one index file". Site pages, separate from the templates themselves:
 
-- **`index.html`** (root) — the portfolio homepage: nav bar, hero, and a gallery of design
-  cards. Each card embeds a live scaled-down iframe preview of one representative template from
-  that design (see the `.thumb` CSS technique in `assets/site.css` — a fixed-size iframe,
-  `transform: scale()`, `overflow: hidden`) and links to that design's browser page.
-- **`browse/<design>.html`** (e.g. `browse/spectrum.html`) — the per-design template browser: a
-  sidebar with all modules/templates as expandable groups (plus a `<select>` fallback on
-  mobile), and a main pane that renders the selected template live in an iframe. Selection is
-  driven by a JS data array hardcoded at the bottom of the page (module name, accent color, base
-  path, and a `[label, filename]` list per item) and mirrored into the URL hash so individual
-  templates are directly linkable/shareable.
+- **`index.html`** (root) — the homepage: nav bar, hero, and a gallery of design cards. Each
+  card embeds a live scaled-down iframe preview of one representative template from that design
+  (see the `.thumb` CSS technique in `assets/site.css` — a fixed-size iframe,
+  `transform: scale()`, `overflow: hidden`) and links to `designs/<slug>/index.html`.
+- **`designs/index.html`** — the full designs gallery as its own dedicated page (same card
+  pattern as the homepage's teaser section).
+- **`designs/<design-slug>/index.html`** (e.g. `designs/spectrum/index.html`) — that design's
+  overview: color-swatch legend, and a grid of its module cards (same `.design-card` component,
+  reused), each linking to `designs/<design-slug>/<module-slug>/index.html`.
+- **`designs/<design-slug>/<module-slug>/index.html`** — one real static page per module (e.g.
+  `designs/spectrum/incident/index.html`), listing every template in that module as a card
+  (thumbnail iframe preview + one-line description + an "Open Template ↗" link straight to the
+  real file under `Spectrum/<Module>/`, opened in a new tab). **No JS data arrays** — every
+  template card is hand-written HTML in its module's page, so the page's content is real markup
+  on disk, not something assembled at runtime.
+- **`docs/index.html`** — how to bring these templates into a real Ivanti environment (paste
+  instructions, the `$(If...)` syntax, bilingual structure, repo layout).
+- **`about/index.html`** — about the project and Asem Zaidan as author/owner.
 - **`assets/site.css` / `assets/site.js`** — shared styling and behavior (nav toggle, scroll
-  reveal) for both of the above. Not used by anything under `Spectrum/` — that folder must stay
-  pure Ivanti-pasteable template content, no site chrome.
+  reveal, `.design-card`/`.thumb`/`.page-head`/`.prose` components) for every page above. Not
+  used by anything under `Spectrum/` — that folder must stay pure Ivanti-pasteable template
+  content, no site chrome.
 
-**Whenever a template is added, removed, or renamed, update the matching design's JS data array
-in `browse/<design>.html`** (and its module accordion / mobile `<select>` render off that same
-array automatically) — or the live browser will drift out of sync with what's actually in the
-repo. If a new design folder is added at the repo root, it needs: its own `browse/<name>.html`
-following this same pattern, and a new (non-"coming soon") card added to `index.html`'s designs
-grid.
+**Whenever a template is added, removed, or renamed in `Spectrum/`, update the matching
+module's page at `designs/spectrum/<module-slug>/index.html`** by hand (add/remove/edit its
+card) — and update that module's template count badge on `designs/spectrum/index.html` and in
+`README.md`/`CLAUDE.md` too. There is no shared data source to keep in sync automatically by
+design; each page's content must be edited directly. If a new design folder is added at the repo
+root, it needs the same shape as `designs/spectrum/`: an overview page, one page per module, and
+a new (non-"coming soon") card added to both `index.html`'s and `designs/index.html`'s grids.
 
 ## Top-level structure: this repo holds multiple *designs*
 

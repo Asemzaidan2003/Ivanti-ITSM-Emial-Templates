@@ -14,20 +14,23 @@ later without touching what's already here (see [Roadmap](#roadmap)).
 > example-data cast, etc.), see [`CLAUDE.md`](./CLAUDE.md) — this README is the human-facing
 > overview, that file is the detailed reference used when building new templates.
 
-## Live previews
+## Live site
 
 🔗 **[asemzaidan2003.github.io/Ivanti-ITSM-Emial-Templates](https://asemzaidan2003.github.io/Ivanti-ITSM-Emial-Templates/)**
 
-This isn't just a folder of files — it's a small portfolio site (built by Asem Zaidan) hosted on
-GitHub Pages:
+This is a real, multi-page portfolio site (built by Asem Zaidan) hosted on GitHub Pages — not a
+single index file with everything crammed into it. Every section is its own directory with its
+own `index.html`:
 
-- **`index.html`** — the homepage: a hero, then a gallery of design cards. Each card shows a
-  live, scaled-down iframe preview of that design and links through to its browser page.
-- **`browse/spectrum.html`** — the Spectrum design's browser: a sidebar listing all 11 modules
-  and 60 templates, and a main pane that renders whichever template is selected, live, in an
-  iframe (exactly as it would look pasted into Ivanti). Selecting a template updates the URL
-  hash, so any specific template can be linked to directly, e.g.
-  `browse/spectrum.html#incident/incident-email-template.html`.
+- **`/`** — homepage: hero, and a gallery of design cards with a live iframe preview each.
+- **`/designs/`** — the full designs gallery (same idea as the homepage section, as its own page).
+- **`/designs/spectrum/`** — Spectrum's overview: the color system, and a card grid of its 11
+  modules.
+- **`/designs/spectrum/<module>/`** — one real page per module (e.g.
+  `/designs/spectrum/incident/`), listing every template in that module as a card with a live
+  preview thumbnail and an "Open Template" link to the actual rendered file.
+- **`/docs/`** — how to bring these templates into your own Ivanti environment.
+- **`/about/`** — about the project and its author.
 
 (Markdown on GitHub can't render styled HTML inline — that's why this preview experience lives
 on Pages instead of embedded in this README.)
@@ -36,13 +39,20 @@ on Pages instead of embedded in this README.)
 
 ```
 My Templates/
-├── README.md               ← you are here
-├── CLAUDE.md                 ← detailed design-system reference
-├── index.html                 ← portfolio homepage (Pages entry point)
-├── assets/                     ← shared site CSS/JS for index.html + browse/
-├── browse/
-│   └── spectrum.html            ← Spectrum's live template browser page
-└── Spectrum/                     ← design #1 (see below) — pure template content only
+├── README.md                    ← you are here
+├── CLAUDE.md                     ← detailed design-system reference
+├── index.html                      ← homepage (Pages entry point)
+├── assets/                          ← shared site CSS/JS for every page below
+├── designs/
+│   ├── index.html                     ← designs gallery
+│   └── spectrum/
+│       ├── index.html                   ← Spectrum overview + module grid
+│       ├── incident/index.html           ← one real page per module (×11)
+│       ├── service-request/index.html
+│       └── ...
+├── docs/index.html                  ← implementation guide
+├── about/index.html                 ← about the project / author
+└── Spectrum/                        ← design #1 (see below) — pure template content only
     ├── Incident/
     ├── Service Request/
     ├── Approval/
@@ -56,10 +66,10 @@ My Templates/
     └── Employee/
 ```
 
-`index.html`, `assets/`, and `browse/` are the portfolio site — they exist purely to make the
-templates browsable and previewable on GitHub Pages, and are not part of any design's actual
-Ivanti template content. Each module folder under `Spectrum/` contains one `.html` file per
-notification/status — open any file directly
+`index.html`, `assets/`, `designs/`, `docs/`, and `about/` are the portfolio site — they exist
+purely to make the templates browsable and previewable on GitHub Pages, and are not part of any
+design's actual Ivanti template content. Each module folder under `Spectrum/` contains one
+`.html` file per notification/status — open any file directly
 in a browser to preview it, or paste its contents into Ivanti's HTML template editor.
 
 ## What's inside (60 templates across 11 modules)

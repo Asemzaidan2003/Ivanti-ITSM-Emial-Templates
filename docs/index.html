@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs — Ivanti ITSM Email Templates — Asem Zaidan</title>
+<meta name="description" content="How to use the Ivanti ITSM email templates in your own environment.">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="container">
+      <a class="brand" href="../index.html">
+        <span class="mark">AZ</span>
+        <span><span class="name">Asem Zaidan</span><span class="role">ITSM Email Template Systems</span></span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation"><span></span></button>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../designs/index.html">Designs</a>
+        <a href="../docs/index.html" class="active">Docs</a>
+        <a href="../about/index.html">About</a>
+        <a href="https://github.com/Asemzaidan2003/Ivanti-ITSM-Emial-Templates" class="cta">GitHub ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="page-head">
+    <div class="container">
+      <div class="breadcrumb"><a href="../index.html">Home</a> / Docs</div>
+      <h1>Documentation</h1>
+      <p>How to bring these templates into your own Ivanti Neurons for ITSM environment, and how the repository is organized under the hood.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-col">
+
+      <div class="prose">
+
+        <h2 id="getting-started">Getting started</h2>
+        <ol>
+          <li>Pick a design (currently <a href="../designs/spectrum/index.html">Spectrum</a>) and a module page for the notification you need.</li>
+          <li>Open the template — either click through to it live, or find its file under <code>Spectrum/&lt;Module&gt;/&lt;file&gt;.html</code> in the repository.</li>
+          <li>Copy the file's full HTML contents into the matching notification's HTML body field inside Ivanti Neurons for ITSM.</li>
+          <li>Replace the placeholder logo URL, company name, and every <code>https://your-itsm-system.com/...</code> link with your own environment's values.</li>
+          <li>Map the example field values (ticket ID, requester name, priority, dates, etc.) to your actual Ivanti field tokens.</li>
+        </ol>
+        <div class="callout">
+          Every template is self-contained: a single root <code>&lt;div&gt;</code>, table-based
+          layout, no external stylesheets, no build step. It's meant to be pasted as-is.
+        </div>
+
+        <h2 id="ivanti-syntax">Ivanti placeholder syntax</h2>
+        <p>
+          Priority and status badges use Ivanti's native conditional syntax so they render
+          dynamically inside the platform — this is real Ivanti template syntax, not a
+          placeholder for illustration:
+        </p>
+        <pre><code>$(If Priority == 1
+  Then '&lt;span style="..."&gt;1 - High&lt;/span&gt;'
+  Else (If Priority == 2
+    Then '&lt;span style="..."&gt;2 - Medium&lt;/span&gt;'
+    Else '&lt;span style="..."&gt;3 - Low&lt;/span&gt;'))</code></pre>
+        <p>
+          The same pattern is used for other conditional fields across the library (SLA status,
+          service request status, etc.) — search for <code>$(If</code> inside any template to
+          find every dynamic field.
+        </p>
+
+        <h2 id="bilingual">Bilingual (English / Arabic) structure</h2>
+        <p>
+          Every template renders both languages in a single email: a full English section, a
+          dashed <strong>"عربي"</strong> divider, then a full right-to-left Arabic section — so
+          one file serves both audiences without duplicating templates per language. Arabic
+          sections carry <code>dir="rtl"</code> and mirror text alignment (left/right swapped)
+          rather than reusing the English layout verbatim.
+        </p>
+
+        <h2 id="structure">Repository structure</h2>
+        <pre><code>My Templates/
+├── README.md              ← project overview
+├── CLAUDE.md               ← detailed design-system reference
+├── index.html               ← this site's homepage
+├── designs/                   ← one folder per site page: designs gallery,
+│   └── spectrum/                per-design overview, per-module browsing
+│       ├── incident/
+│       ├── service-request/
+│       └── ...
+├── docs/, about/               ← this page, and the About page
+├── assets/                     ← shared site CSS/JS
+└── Spectrum/                      ← design #1's actual template content
+    ├── Incident/
+    ├── Service Request/
+    └── ...</code></pre>
+        <p>
+          <code>Spectrum/</code> holds nothing but pure, Ivanti-pasteable template files — no site
+          chrome. Everything else (<code>index.html</code>, <code>designs/</code>,
+          <code>docs/</code>, <code>about/</code>, <code>assets/</code>) exists only to make the
+          templates browsable and previewable as a website.
+        </p>
+
+        <h2 id="colors">Color system</h2>
+        <p>
+          Spectrum assigns one accent-color gradient per module, so ticket type and severity are
+          readable before an email is even opened — amber for "needs your input", emerald for a
+          good outcome, red for rejected/low-satisfaction, deepening toward maroon as an
+          Escalation approaches an SLA breach. See the swatches on the
+          <a href="../designs/spectrum/index.html">Spectrum overview page</a> for the full key.
+        </p>
+
+      </div>
+
+      <aside class="toc">
+        <div class="toc-title">On this page</div>
+        <a href="#getting-started">Getting started</a>
+        <a href="#ivanti-syntax">Ivanti placeholder syntax</a>
+        <a href="#bilingual">Bilingual structure</a>
+        <a href="#structure">Repository structure</a>
+        <a href="#colors">Color system</a>
+      </aside>
+
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="left">Designed &amp; built by <strong>Asem Zaidan</strong> · Ivanti Neurons for ITSM email template library</div>
+      <div class="links">
+        <a href="../about/index.html">About</a>
+        <a href="https://github.com/Asemzaidan2003/Ivanti-ITSM-Emial-Templates">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>
