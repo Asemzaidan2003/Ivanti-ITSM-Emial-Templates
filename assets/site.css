@@ -755,6 +755,19 @@ select,
   background: var(--surface-2);
 }
 
+/* Copy Code / View Code only make sense when this page is being viewed
+   embedded in someone else's iframe (no easy right-click "view source"
+   there) — hidden by default, revealed by site.js via body.is-framed. */
+.btn-copy,
+.btn-view {
+  display: none;
+}
+
+body.is-framed .card-actions .btn-copy,
+body.is-framed .card-actions .btn-view {
+  display: inline-flex;
+}
+
 .icon-btn.is-done {
   color: #fff;
   background: var(--accent-4);
@@ -784,10 +797,6 @@ select,
 
 body.is-framed .framed-notice {
   display: flex;
-}
-
-body.is-framed .btn-copy {
-  display: none;
 }
 
 /* -------------------------------- Prose (docs/about) ----------------------- */

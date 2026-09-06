@@ -11,10 +11,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // If this page is itself being displayed inside someone else's iframe,
-  // flag it: clipboard-write is commonly blocked cross-origin there, so the
-  // CSS hides "Copy Code" and shows a banner offering "View Code" / "Open in
-  // a new tab" instead, which always works since it's a top-level navigation.
+  // Copy Code / View Code only make sense when this page is being viewed
+  // embedded in someone else's iframe (no easy right-click "view source"
+  // there), so flag that case and let the CSS reveal those buttons only then.
   var inIframe = false;
   try {
     inIframe = window.self !== window.top;
@@ -75,28 +74,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  var GITHUB_BLOB_BASE = "https://github.com/Asemzaidan2003/Ivanti-ITSM-Emial-Templates/blob/main/";
+
+  function githubUrlFor(relSrc) {
+    return GITHUB_BLOB_BASE + relSrc.replace(/^(\.\.\/)+/, "");
+  }
+
   document.querySelectorAll(".btn-view").forEach(function (btn) {
     btn.addEventListener("click", function (evt) {
       evt.preventDefault();
       var src = btn.getAttribute("data-src");
-      fetch(src)
-        .then(function (res) { return res.text(); })
-        .then(function (code) {
-          var escaped = code
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-          var page =
-            "<!doctype html><meta charset='utf-8'><title>Source</title>" +
-            "<body style='margin:0;background:#0f1629'>" +
-            "<pre style='color:#e5e9f5;font:12.5px/1.6 ui-monospace,Consolas,monospace;" +
-            "padding:20px;white-space:pre-wrap;word-break:break-word'>" +
-            escaped + "</pre></body>";
-          var blob = new Blob([page], { type: "text/html" });
-          var url = URL.createObjectURL(blob);
-          window.open(url, "_blank", "noopener");
-        })
-        .catch(function () { flashButton(btn, "Couldn’t open"); });
+      window.open(githubUrlFor(src), "_blank", "noopener");
     });
   });
 
