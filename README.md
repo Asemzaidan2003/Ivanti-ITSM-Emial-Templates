@@ -149,7 +149,7 @@ showing the header, accent bar, and status ribbon that open every Spectrum email
 
         <!-- Header / Logo -->
         <tr><td align="center" style="padding:36px 40px 24px 40px; background-color:#0f172a;">
-          <img src="https://tjdeed.com/.../TjdeedLogoFullColors-01.png.webp" width="160" alt="Company Logo">
+          <img src=".../assets/tjdeed-logo-white.png" width="160" alt="Company Logo">
         </td></tr>
 
         <!-- EN Status Ribbon -->

@@ -162,7 +162,17 @@ token, left as literal text) → outside the card, a bottom spacer table with
 to match that template's accent.
 
 **Logo**: always
-`https://tjdeed.com/wp-content/uploads/2023/03/TjdeedLogoFullColors-01.png.webp`, 150–160px wide.
+`https://asemzaidan2003.github.io/Ivanti-ITSM-Emial-Templates/assets/tjdeed-logo-white.png`,
+150–160px wide. This is TjDeeD's **white/light logo variant** (solid white wordmark with
+pink/cyan accent shapes, transparent background) — chosen because it's the one that actually
+reads against the dark navy (`#0f172a`) header every template uses; the earlier full-color
+version blended in poorly. The source file lives at `assets/tjdeed-logo-white.png` in this repo
+and is served over GitHub Pages so it resolves as a real public URL from any email client.
+
+If a future design uses a **light-colored header** instead of a dark one, this white logo won't
+read against it — a dark/colored logo variant would need to be sourced and hosted the same way
+(as `assets/<name>.png`, referenced by its Pages URL) before that design could reuse this
+convention.
 
 ### Spectrum color-per-module key (top accent gradient + CTA button color)
 
