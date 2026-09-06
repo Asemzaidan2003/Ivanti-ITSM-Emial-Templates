@@ -710,6 +710,86 @@ select,
   font-size: 13px;
 }
 
+/* ------------------------------ Template card actions ---------------------- */
+/* .thumb-link replaces the old whole-card <a> for template cards specifically,
+   so the thumbnail still opens the rendered file, while Copy/View sit as real
+   buttons below instead of being nested (invalid) inside that same anchor. */
+
+.thumb-link {
+  display: block;
+}
+
+.tpl-card .body {
+  padding-bottom: 20px;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.card-actions .go {
+  flex: 1 1 auto;
+  width: auto;
+  padding: 9px 14px;
+  font-size: 12.5px;
+}
+
+.icon-btn {
+  flex: 1 1 auto;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 9px 14px;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.icon-btn:hover {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent-2) 40%, var(--border));
+  background: var(--surface-2);
+}
+
+.icon-btn.is-done {
+  color: #fff;
+  background: var(--accent-4);
+  border-color: var(--accent-4);
+}
+
+/* Hidden by default; site.js reveals it only when this page is itself
+   embedded in someone else's iframe, where clipboard-write is often blocked. */
+.framed-notice {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #7c2d12;
+  background: #fffbeb;
+  border-bottom: 1px solid #fde68a;
+  padding: 10px 20px;
+}
+
+.framed-notice a {
+  font-weight: 800;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+body.is-framed .framed-notice {
+  display: flex;
+}
+
+body.is-framed .btn-copy {
+  display: none;
+}
+
 /* -------------------------------- Prose (docs/about) ----------------------- */
 
 .prose {
