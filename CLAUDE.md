@@ -13,11 +13,29 @@ so GitHub Pages could be enabled — GitHub's Free plan does not support Pages o
 all, there is no private-Pages option outside paid plans. Pages is enabled serving `main`
 branch, root path, at `https://asemzaidan2003.github.io/Ivanti-ITSM-Emial-Templates/`.
 
-`index.html` at the repo root is the Pages entry point — a plain browsing index (not a Spectrum
-template) linking to every template file, grouped by module. **Whenever a template is added,
-removed, or renamed, update `index.html`'s link list to match**, or the live index will silently
-drift out of sync with what's actually in the repo. If a future design folder is added, give it
-its own section in `index.html` too.
+The Pages entry point is a small portfolio site (owner: Asem Zaidan), separate from the
+templates themselves:
+
+- **`index.html`** (root) — the portfolio homepage: nav bar, hero, and a gallery of design
+  cards. Each card embeds a live scaled-down iframe preview of one representative template from
+  that design (see the `.thumb` CSS technique in `assets/site.css` — a fixed-size iframe,
+  `transform: scale()`, `overflow: hidden`) and links to that design's browser page.
+- **`browse/<design>.html`** (e.g. `browse/spectrum.html`) — the per-design template browser: a
+  sidebar with all modules/templates as expandable groups (plus a `<select>` fallback on
+  mobile), and a main pane that renders the selected template live in an iframe. Selection is
+  driven by a JS data array hardcoded at the bottom of the page (module name, accent color, base
+  path, and a `[label, filename]` list per item) and mirrored into the URL hash so individual
+  templates are directly linkable/shareable.
+- **`assets/site.css` / `assets/site.js`** — shared styling and behavior (nav toggle, scroll
+  reveal) for both of the above. Not used by anything under `Spectrum/` — that folder must stay
+  pure Ivanti-pasteable template content, no site chrome.
+
+**Whenever a template is added, removed, or renamed, update the matching design's JS data array
+in `browse/<design>.html`** (and its module accordion / mobile `<select>` render off that same
+array automatically) — or the live browser will drift out of sync with what's actually in the
+repo. If a new design folder is added at the repo root, it needs: its own `browse/<name>.html`
+following this same pattern, and a new (non-"coming soon") card added to `index.html`'s designs
+grid.
 
 ## Top-level structure: this repo holds multiple *designs*
 

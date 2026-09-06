@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spectrum — Ivanti ITSM Email Templates — Asem Zaidan</title>
+<meta name="description" content="Browse every Spectrum-design Ivanti ITSM email template, by Asem Zaidan.">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="container">
+      <a class="brand" href="../index.html">
+        <span class="mark">AZ</span>
+        <span>
+          <span class="name">Asem Zaidan</span>
+          <span class="role">ITSM Email Template Systems</span>
+        </span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation"><span></span></button>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../index.html#designs" class="active">Designs</a>
+        <a href="https://github.com/Asemzaidan2003/Ivanti-ITSM-Emial-Templates" class="cta">GitHub ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="browser-head">
+    <div class="container">
+      <div class="breadcrumb"><a href="../index.html">Home</a> / <a href="../index.html#designs">Designs</a> / Spectrum</div>
+      <h1>Spectrum</h1>
+      <p>
+        One accent-color gradient per ITSM module, so ticket type and severity are readable from
+        the inbox before the email is even opened. Pick a module on the left, then a template, to
+        render it live below — exactly as it would render pasted into Ivanti Neurons for ITSM.
+      </p>
+      <div class="swatches" id="swatches"></div>
+    </div>
+  </section>
+
+  <div class="mobile-select">
+    <select id="mobileSelect" aria-label="Select a template"></select>
+  </div>
+
+  <section class="browser-body">
+    <aside class="module-nav" id="moduleNav"></aside>
+
+    <main class="preview-pane">
+      <div class="preview-toolbar">
+        <div class="title" id="toolbarTitle">Loading…</div>
+        <a class="open-link" id="openLink" href="#" target="_blank" rel="noopener">Open raw file ↗</a>
+      </div>
+      <div class="preview-frame-wrap">
+        <iframe id="previewFrame" title="Template preview"></iframe>
+      </div>
+    </main>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="left">Designed &amp; built by <strong>Asem Zaidan</strong> · Ivanti Neurons for ITSM email template library</div>
+      <div class="links">
+        <a href="https://github.com/Asemzaidan2003/Ivanti-ITSM-Emial-Templates">GitHub Repository</a>
+        <a href="../index.html">Back Home</a>
+      </div>
+    </div>
+  </footer>
+
+<script src="../assets/site.js"></script>
+<script>
+  var MODULES = [
+    { key: "incident", name: "Incident", color: "#4f46e5", base: "../Spectrum/Incident/", items: [
+      ["New Ticket Created", "incident-email-template.html"],
+      ["Team Queue Assignment", "incident-team-assignment.html"],
+      ["Reassigned — Owner", "incident-reassigned-owner.html"],
+      ["Reassigned — Team", "incident-reassigned-team.html"],
+      ["Status — Waiting for Customer", "incident-status-waiting-customer.html"],
+      ["Status — On Hold (Vendor)", "incident-status-on-hold-vendor.html"],
+      ["Status — Resolved", "incident-status-resolved.html"],
+      ["Status — Reopened", "incident-status-reopened.html"],
+      ["Status — Closed", "incident-status-closed.html"],
+      ["Status — Cancelled", "incident-status-cancelled.html"],
+      ["CSAT Feedback Survey", "incident-feedback-survey.html"]
+    ]},
+    { key: "service-request", name: "Service Request", color: "#7c3aed", base: "../Spectrum/Service%20Request/", items: [
+      ["Submitted — Customer View", "service-request-email-template-customer.html"],
+      ["Assigned — Analyst View", "service-request-email-template-analyst.html"],
+      ["Team Queue Assignment", "service-request-team-assignment.html"],
+      ["Reassigned — Owner", "service-request-reassigned-owner.html"],
+      ["Reassigned — Team", "service-request-reassigned-team.html"],
+      ["Status — Waiting for Customer", "service-request-status-waiting-customer.html"],
+      ["Status — Waiting for Development", "service-request-status-waiting-development.html"],
+      ["Status — On Hold", "service-request-status-on-hold.html"],
+      ["Status — Fulfilled", "service-request-status-fulfilled.html"],
+      ["Status — Closed", "service-request-status-closed.html"],
+      ["Status — Cancelled", "service-request-status-cancelled.html"],
+      ["CSAT Feedback Survey", "service-request-feedback-survey.html"]
+    ]},
+    { key: "approval", name: "Approval", color: "#f59e0b", base: "../Spectrum/Approval/", items: [
+      ["Requested — Customer View", "approval-request-customer.html"],
+      ["Requested — Approver View", "approval-request-approver.html"],
+      ["Approved", "approval-approved-customer.html"],
+      ["Rejected", "approval-rejected-customer.html"],
+      ["Timed Out", "approval-timedout-customer.html"],
+      ["Cancelled", "approval-cancelled-customer.html"]
+    ]},
+    { key: "escalation", name: "Escalation", color: "#dc2626", base: "../Spectrum/Escalation/", items: [
+      ["Level 1 — Team Lead", "escalation-level-1.html"],
+      ["Level 2 — Manager", "escalation-level-2.html"],
+      ["Level 3 — Director", "escalation-level-3.html"],
+      ["SLA Breach", "sla-breach.html"]
+    ]},
+    { key: "task-management", name: "Task Management", color: "#0891b2", base: "../Spectrum/Task%20Management/", items: [
+      ["Assigned to You", "task-email-template-analyst.html"],
+      ["Team Queue Assignment", "task-team-assignment.html"],
+      ["Status — Completed", "task-status-completed.html"],
+      ["Status — Overdue", "task-status-overdue.html"],
+      ["Status — Reassigned", "task-status-reassigned.html"],
+      ["Status — Cancelled", "task-status-cancelled.html"]
+    ]},
+    { key: "asset-management", name: "Asset Management", color: "#0ea5e9", base: "../Spectrum/Asset%20Management/", items: [
+      ["Assigned to You", "asset-assigned-to-you.html"],
+      ["Warranty Expiring", "asset-warranty-expiring.html"],
+      ["Retirement Notice", "asset-retirement-notice.html"],
+      ["Audit Confirmation Required", "asset-audit-required.html"],
+      ["Returned Confirmation", "asset-returned-confirmation.html"]
+    ]},
+    { key: "knowledge-management", name: "Knowledge Management", color: "#0d9488", base: "../Spectrum/Knowledge%20Management/", items: [
+      ["Article Published", "knowledge-article-published.html"],
+      ["Review Due", "knowledge-article-review-due.html"],
+      ["Approval Needed", "knowledge-article-approval-needed.html"],
+      ["Article Retired", "knowledge-article-retired.html"]
+    ]},
+    { key: "problem-management", name: "Problem Management", color: "#a21caf", base: "../Spectrum/Problem%20Management/", items: [
+      ["Problem Record Created", "problem-record-created.html"],
+      ["Known Error Published", "problem-known-error-published.html"],
+      ["Resolved & Closed", "problem-resolved-closed.html"]
+    ]},
+    { key: "maintenance-operations", name: "Maintenance Operations", color: "#ea580c", base: "../Spectrum/Maintenance%20Operations/", items: [
+      ["Scheduled Notice", "scheduled-maintenance-notice.html"],
+      ["24-Hour Reminder", "maintenance-reminder-24h.html"],
+      ["In Progress", "maintenance-in-progress.html"],
+      ["Completed", "maintenance-completed.html"],
+      ["Rescheduled", "maintenance-rescheduled.html"]
+    ]},
+    { key: "feedback", name: "Feedback", color: "#d97706", base: "../Spectrum/Feedback/", items: [
+      ["CSAT Reminder", "csat-reminder.html"],
+      ["Survey Completed", "survey-completed.html"],
+      ["Low Satisfaction Alert", "low-satisfaction-alert.html"]
+    ]},
+    { key: "employee", name: "Employee", color: "#4f46e5", base: "../Spectrum/Employee/", items: [
+      ["Welcome — New User Created", "employee-welcome-new-user.html"]
+    ]}
+  ];
+
+  var moduleNav = document.getElementById("moduleNav");
+  var mobileSelect = document.getElementById("mobileSelect");
+  var swatches = document.getElementById("swatches");
+  var frame = document.getElementById("previewFrame");
+  var toolbarTitle = document.getElementById("toolbarTitle");
+  var openLink = document.getElementById("openLink");
+
+  MODULES.forEach(function (mod) {
+    var sw = document.createElement("span");
+    sw.className = "swatch";
+    sw.style.background = mod.color;
+    sw.textContent = mod.name;
+    swatches.appendChild(sw);
+
+    var group = document.createElement("div");
+    group.className = "module-group";
+    group.innerHTML =
+      '<button class="group-btn" type="button">' +
+        '<span>' + mod.name + '</span>' +
+        '<span style="display:flex; align-items:center; gap:8px;">' +
+          '<span class="chip">' + mod.items.length + '</span>' +
+          '<span class="chevron">▸</span>' +
+        '</span>' +
+      '</button>' +
+      '<div class="items"></div>';
+
+    var itemsEl = group.querySelector(".items");
+    mod.items.forEach(function (item) {
+      var a = document.createElement("a");
+      a.href = "#" + mod.key + "/" + item[1];
+      a.textContent = item[0];
+      a.dataset.module = mod.key;
+      a.dataset.file = item[1];
+      itemsEl.appendChild(a);
+    });
+
+    group.querySelector(".group-btn").addEventListener("click", function () {
+      group.classList.toggle("open");
+    });
+
+    moduleNav.appendChild(group);
+
+    var optgroup = document.createElement("optgroup");
+    optgroup.label = mod.name;
+    mod.items.forEach(function (item) {
+      var opt = document.createElement("option");
+      opt.value = mod.key + "/" + item[1];
+      opt.textContent = item[0];
+      optgroup.appendChild(opt);
+    });
+    mobileSelect.appendChild(optgroup);
+  });
+
+  function findModule(key) {
+    for (var i = 0; i < MODULES.length; i++) {
+      if (MODULES[i].key === key) return MODULES[i];
+    }
+    return null;
+  }
+
+  function selectTemplate(moduleKey, file, opts) {
+    var mod = findModule(moduleKey);
+    if (!mod) return;
+    var label = null;
+    mod.items.forEach(function (it) { if (it[1] === file) label = it[0]; });
+    if (!label) return;
+
+    var src = mod.base + file;
+    frame.src = src;
+    openLink.href = src;
+    toolbarTitle.innerHTML = label + "<span>" + mod.name + "</span>";
+    mobileSelect.value = moduleKey + "/" + file;
+
+    document.querySelectorAll(".module-group .items a").forEach(function (a) {
+      a.classList.toggle("active", a.dataset.module === moduleKey && a.dataset.file === file);
+    });
+    document.querySelectorAll(".module-group").forEach(function (g) {
+      var hasActive = g.querySelector("a.active");
+      if (hasActive) g.classList.add("open");
+    });
+
+    if (!opts || !opts.skipHash) {
+      history.replaceState(null, "", "#" + moduleKey + "/" + file);
+    }
+  }
+
+  mobileSelect.addEventListener("change", function () {
+    var parts = mobileSelect.value.split("/");
+    selectTemplate(parts[0], parts[1]);
+  });
+
+  moduleNav.addEventListener("click", function (e) {
+    var a = e.target.closest("a[data-module]");
+    if (!a) return;
+    e.preventDefault();
+    selectTemplate(a.dataset.module, a.dataset.file);
+  });
+
+  function loadFromHash() {
+    var hash = location.hash.replace(/^#/, "");
+    var parts = hash.split("/");
+    if (parts.length === 2 && findModule(parts[0])) {
+      selectTemplate(parts[0], parts[1], { skipHash: true });
+    } else {
+      selectTemplate(MODULES[0].key, MODULES[0].items[0][1], { skipHash: true });
+    }
+  }
+
+  window.addEventListener("hashchange", loadFromHash);
+  loadFromHash();
+</script>
+</body>
+</html>
