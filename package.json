@@ -1,0 +1,8 @@
+{
+  "name": "ivanti-itsm-email-templates-site",
+  "private": true,
+  "description": "Build script for the portal site pages (index.html, designs/, docs/, about/). Does not touch Spectrum/ or Ledger/ email templates.",
+  "scripts": {
+    "build": "node build.js"
+  }
+}
