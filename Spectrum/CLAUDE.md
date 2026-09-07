@@ -1,0 +1,116 @@
+# Design: Spectrum
+
+Named for its defining trait: every module gets its own accent-color gradient, so ticket type
+and severity are readable from the inbox before opening the email.
+
+Shared repo-wide conventions (site hosting, top-level structure, the recurring cast of example
+data, outstanding requests) live in the root `CLAUDE.md` — read that first if you haven't. This
+file covers only what's specific to `Spectrum/`.
+
+### Template inventory (64 files across 11 module folders)
+
+- **Incident/** (11) — new ticket (customer-facing base template, also the "analyst assigned"
+  equivalent), team assignment, reassigned (owner + team), 6 lifecycle statuses (waiting for
+  customer, on hold/pending vendor, resolved, reopened, closed, cancelled), feedback survey.
+- **Service Request/** (12) — customer submitted, analyst assigned, team assignment, reassigned
+  (owner + team), 6 lifecycle statuses (waiting for customer, waiting for development, on hold,
+  fulfilled, closed, cancelled), feedback survey. Also holds a `-customer` suffixed duplicate of
+  the base template for clarity alongside the `-analyst` one.
+- **Approval/** (6) — request-to-customer, request-to-approver (with Approve/Reject buttons),
+  approved, rejected, timed-out, cancelled.
+- **Escalation/** (4) — Level 1/2/3 (Team Lead → Manager → Director) with a visual tier tracker,
+  plus SLA Breach (darkest tier, tracker shows all levels exhausted).
+- **Task Management/** (6) — assigned to you, team assignment, completed, overdue, reassigned,
+  cancelled.
+- **Asset Management/** (5) — assigned to you, warranty expiring, retirement notice, audit
+  required, returned confirmation.
+- **Knowledge Management/** (4) — article published, review due, approval needed, retired.
+- **Problem Management/** (3) — problem record created, known error published (workaround),
+  resolved & closed.
+- **Maintenance Operations/** (5) — scheduled notice, 24h reminder, in progress, completed,
+  rescheduled.
+- **Feedback/** (3) — CSAT reminder (final nudge), survey completed (thank-you), low satisfaction
+  alert (internal, to a manager).
+- **Employee/** (1) — welcome / new user created. Thin on purpose; only one lifecycle event exists
+  for this module so far.
+
+Gaps knowingly left for later: a fuller Employee lifecycle (offboarding/deactivation, role
+change, password reset) was flagged but not built. When it is, it stays inside `Spectrum/` (and
+gets replicated into any other design folder that also wants it) — it is not a new design.
+
+### Spectrum design system (apply to every new/edited template inside `Spectrum/`)
+
+**Structure.** Single `<div>` root (no `<html>`/`<head>`/`<body>` — these get pasted into
+Ivanti's HTML body field), everything inside via nested `<table role="presentation">` for email
+client compatibility. Never use CSS flex/grid — tables only.
+
+**Two visual layouts exist, both valid, pick by folder precedent:**
+1. *Incident-style* (older, still used in Incident/Escalation/Employee/Asset/Knowledge/Problem/
+   Maintenance/Feedback): outer card `border-radius:16px`, logo sits directly in the dark
+   `#0f172a` header, status ribbon pill appears right below the header, CTA button is a rounded
+   rectangle (`border-radius:10px`).
+2. *Service-Request-style* (newer, used in Service Request/Task Management/Approval): outer card
+   `border-radius:20px`, a circular white icon badge (68px, containing a 60px tinted-gradient
+   inner circle with an emoji) straddles the header/body boundary via `margin-bottom:-34px` on
+   its wrapper table, CTA button is a full pill (`border-radius:50px`).
+
+Both layouts share: `#eef1f6` (Incident-style) or `#f1f5f9` (SR-style) as the page background,
+`#0f172a` dark header, a details card with `background:#f8fafc; border:1px solid #e2e8f0;
+border-radius:12–14px`, and the same footer block (see below). Match whichever style the
+existing files in that folder use — don't mix styles within one folder.
+
+**Bilingual EN/AR is mandatory** for every template. Structure: full English section first, then
+a dashed divider row with the word "عربي" centered, then a full Arabic section with `dir="rtl"`
+on every `<td>` that contains RTL text (title, subtext, table cells, buttons). Arabic table
+cells swap `text-align:left/right` versus their English counterparts (mirrored, not identical).
+The preheader `<div>` at the very top contains both languages separated by ` / `.
+
+**Top accent bar**: a 6px-tall `<td>` with a `linear-gradient(90deg, ...)` unique to the
+module/status, signals ticket type and severity before the reader opens the email. See the
+color table below.
+
+**Details card fields** always use the pattern: label cell (`font-size:13px; color:#94a3b8;
+font-weight:600`) + value cell (`font-size:14px; color:#0f172a`), rows separated by
+`border-bottom:1px solid #e2e8f0` except the last row. Priority/Status badges use Ivanti's
+`$(If Field == value Then '<span style="...">...</span>' Else (If ...))` placeholder syntax —
+this is real Ivanti template syntax, not a documentation placeholder, so preserve it exactly
+(single quotes around the HTML, parenthesized nested `Else (If ...)`).
+
+**Footer** (identical structure every time): divider rule → English "automated notification,
+please do not reply" paragraph → Arabic equivalent → `© CurrentYear Customer Name` (Ivanti
+token, left as literal text) → outside the card, a bottom spacer table with
+`© currentYear TjDeeD Technology. All Rights Reserved` linking to https://tjdeed.com/, colored
+to match that template's accent.
+
+**Logo**: always
+`https://asemzaidan2003.github.io/Ivanti-ITSM-Emial-Templates/assets/tjdeed-logo-white.png`,
+150–160px wide. This is TjDeeD's **white/light logo variant** (solid white wordmark with
+pink/cyan accent shapes, transparent background) — chosen because it's the one that actually
+reads against the dark navy (`#0f172a`) header every template uses; the earlier full-color
+version blended in poorly. The source file lives at `assets/tjdeed-logo-white.png` in this repo
+and is served over GitHub Pages so it resolves as a real public URL from any email client.
+
+If a future design uses a **light-colored header** instead of a dark one, this white logo won't
+read against it — a dark/colored logo variant would need to be sourced and hosted the same way
+(as `assets/<name>.png`, referenced by its Pages URL) before that design could reuse this
+convention.
+
+### Spectrum color-per-module key (top accent gradient + CTA button color)
+
+| Module / meaning | Colors |
+|---|---|
+| Incident (base) | indigo `#4f46e5` → purple `#7c3aed` → cyan `#06b6d4` |
+| Service Request (customer) | violet `#7c3aed` → indigo `#4f46e5` → cyan `#06b6d4` → emerald `#10b981` |
+| Task Management | teal `#0891b2` → cyan `#06b6d4` → indigo `#4f46e5` |
+| Approval (pending decision) | amber `#f59e0b` → orange `#ea580c`/`#dc2626` |
+| Approved / Fulfilled / Resolved / positive outcome | emerald `#10b981` → green `#059669` |
+| Rejected / Cancelled / low satisfaction | red `#ef4444`/`#dc2626` |
+| Waiting-for-customer / needs-input / reminders | amber `#f59e0b` |
+| On hold / neutral wait / closed / terminal state | slate `#94a3b8`/`#475569` |
+| Reopened | orange `#f97316`/`#ea580c` |
+| Escalation L1→L3→Breach | amber → orange → red → near-black maroon `#7f1d1d`/`#450a0a` (severity ramps) |
+| Asset Management | sky blue `#0ea5e9` → `#0284c7` → indigo `#4f46e5` |
+| Knowledge Management | teal `#0d9488` → emerald `#059669` → cyan `#06b6d4` |
+| Problem Management | violet/magenta `#a21caf` → purple `#7c3aed` → indigo `#4f46e5` |
+| Maintenance/Operations | amber `#f59e0b` → orange `#ea580c`/`#dc2626` |
+| Reassignment (owner or team level) | indigo `#4338ca` → cyan `#06b6d4` (a distinct shade from the base module color, so reassignment reads differently from "new"/"assigned" in an inbox) |

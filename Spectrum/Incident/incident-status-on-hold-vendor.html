@@ -84,7 +84,7 @@
                           Ticket ID</td>
                         <td
                           style="padding:8px 0; border-bottom:1px solid #e2e8f0; font-size:14px; color:#0f172a; font-weight:700; text-align:right;">
-                          #TCK-24902</td>
+                          $(IncidentNumber)</td>
                       </tr>
                       <tr>
                         <td
@@ -92,7 +92,7 @@
                           Subject</td>
                         <td
                           style="padding:8px 0; border-bottom:1px solid #e2e8f0; font-size:14px; color:#0f172a; font-weight:600; text-align:right;">
-                          Printer hardware fault — recurring paper jam</td>
+                          $(Subject)</td>
                       </tr>
                       <tr>
                         <td
@@ -122,7 +122,7 @@
                 <tr>
                   <td align="center"
                     style="border-radius:10px; background-color:#4f46e5; background-image:linear-gradient(135deg,#4f46e5 0%,#64748b 100%);">
-                    <a href="https://your-itsm-system.com/tickets/TCK-24902" target="_blank"
+                    <a href="$(SecureServerURL())/Login.aspx?Scope=ObjectWorkspace&amp;CommandId=Search&amp;ObjectType=Incident%23&amp;CommandData=RecId,%3D,0,$(RecId),string,AND|#" target="_blank"
                       style="display:inline-block; padding:14px 36px; font-family:'Segoe UI', Tahoma, Helvetica, Arial, sans-serif; font-size:15px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:10px; letter-spacing:0.3px;">
                       View Ticket &nbsp;→
                     </a>
@@ -207,7 +207,7 @@
                           رقم التذكرة</td>
                         <td
                           style="padding:8px 0; border-bottom:1px solid #e2e8f0; font-size:14px; color:#0f172a; font-weight:700; text-align:left;">
-                          #TCK-24902</td>
+                          $(IncidentNumber)</td>
                       </tr>
                       <tr>
                         <td
@@ -215,7 +215,7 @@
                           الموضوع</td>
                         <td
                           style="padding:8px 0; border-bottom:1px solid #e2e8f0; font-size:14px; color:#0f172a; font-weight:600; text-align:left;">
-                          عطل في جهاز الطابعة — انحشار ورق متكرر</td>
+                          $(Subject)</td>
                       </tr>
                       <tr>
                         <td
@@ -245,7 +245,7 @@
                 <tr>
                   <td align="center"
                     style="border-radius:10px; background-color:#4f46e5; background-image:linear-gradient(135deg,#4f46e5 0%,#64748b 100%);">
-                    <a href="https://your-itsm-system.com/tickets/TCK-24902" target="_blank"
+                    <a href="$(SecureServerURL())/Login.aspx?Scope=ObjectWorkspace&amp;CommandId=Search&amp;ObjectType=Incident%23&amp;CommandData=RecId,%3D,0,$(RecId),string,AND|#" target="_blank"
                       style="display:inline-block; padding:14px 36px; font-family:'Segoe UI', Tahoma, Helvetica, Arial, sans-serif; font-size:15px; font-weight:700; color:#ffffff; text-decoration:none; border-radius:10px; letter-spacing:0.3px;">
                       ← &nbsp;عرض التذكرة
                     </a>
@@ -292,7 +292,7 @@
             <td align="center"
               style="padding:0 40px 36px 40px; font-family:'Segoe UI', Tahoma, Helvetica, Arial, sans-serif;">
               <p style="margin:0; font-size:12px; color:#cbd5e1; text-align:center;">
-                © CurrentYear Customer Name
+                © $(LocalYear()) Customer Name
               </p>
             </td>
           </tr>
@@ -305,7 +305,7 @@
           <tr>
             <td align="center"
               style="padding:20px 20px 0 20px; font-family:'Segoe UI', Tahoma, Helvetica, Arial, sans-serif; font-size:11px; color:#a0aec0; text-align:center;">
-              © currentYear <span style="color:#4f46e5; text-decoration:underline; word-break:break-all;"><a
+              © $(LocalYear()) <span style="color:#4f46e5; text-decoration:underline; word-break:break-all;"><a
                   href="https://tjdeed.com/" style="color:#4f46e5; text-decoration:underline;">TjDeeD
                   Technology</a></span>. All Rights Reserved
             </td>

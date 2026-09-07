@@ -6,9 +6,9 @@ designed to be pasted directly into Ivanti's notification/template editor — no
 stylesheets, no build step.
 
 This repository is organized as a collection of **designs**. A design is a complete,
-self-contained visual system covering every ITSM module and status below. Right now there is
-one design, **Spectrum**, but the structure is built so additional designs can sit alongside it
-later without touching what's already here (see [Roadmap](#roadmap)).
+self-contained visual system covering every ITSM module and status below. There are currently
+two designs, **Spectrum** and **Ledger**, and the structure is built so additional designs can
+sit alongside them later without touching what's already here (see [Roadmap](#roadmap)).
 
 > For the full, exhaustive conventions this project follows (exact colors, markup patterns,
 > example-data cast, etc.), see [`CLAUDE.md`](./CLAUDE.md) — this README is the human-facing
@@ -29,6 +29,9 @@ own `index.html`:
 - **`/designs/spectrum/<module>/`** — one real page per module (e.g.
   `/designs/spectrum/incident/`), listing every template in that module as a card with a live
   preview thumbnail and an "Open Template" link to the actual rendered file.
+- **`/designs/ledger/`** — Ledger's overview: the color system, and a card grid of its 11 modules.
+- **`/designs/ledger/<module>/`** — one real page per module (e.g. `/designs/ledger/incident/`),
+  same idea as Spectrum's module pages.
 - **`/docs/`** — how to bring these templates into your own Ivanti environment.
 - **`/about/`** — about the project and its author.
 
@@ -45,14 +48,31 @@ My Templates/
 ├── assets/                          ← shared site CSS/JS for every page below
 ├── designs/
 │   ├── index.html                     ← designs gallery
-│   └── spectrum/
-│       ├── index.html                   ← Spectrum overview + module grid
+│   ├── spectrum/
+│   │   ├── index.html                   ← Spectrum overview + module grid
+│   │   ├── incident/index.html           ← one real page per module (×11)
+│   │   ├── service-request/index.html
+│   │   └── ...
+│   └── ledger/
+│       ├── index.html                   ← Ledger overview + module grid
 │       ├── incident/index.html           ← one real page per module (×11)
 │       ├── service-request/index.html
 │       └── ...
 ├── docs/index.html                  ← implementation guide
 ├── about/index.html                 ← about the project / author
-└── Spectrum/                        ← design #1 (see below) — pure template content only
+├── Spectrum/                        ← design #1 (see below) — pure template content only
+│   ├── Incident/
+│   ├── Service Request/
+│   ├── Approval/
+│   ├── Escalation/
+│   ├── Task Management/
+│   ├── Asset Management/
+│   ├── Knowledge Management/
+│   ├── Problem Management/
+│   ├── Maintenance Operations/
+│   ├── Feedback/
+│   └── Employee/
+└── Ledger/                          ← design #2 — same 11 module folders, pure template content
     ├── Incident/
     ├── Service Request/
     ├── Approval/
@@ -68,11 +88,11 @@ My Templates/
 
 `index.html`, `assets/`, `designs/`, `docs/`, and `about/` are the portfolio site — they exist
 purely to make the templates browsable and previewable on GitHub Pages, and are not part of any
-design's actual Ivanti template content. Each module folder under `Spectrum/` contains one
-`.html` file per notification/status — open any file directly
-in a browser to preview it, or paste its contents into Ivanti's HTML template editor.
+design's actual Ivanti template content. Each module folder under `Spectrum/` or `Ledger/`
+contains one `.html` file per notification/status — open any file directly in a browser to
+preview it, or paste its contents into Ivanti's HTML template editor.
 
-## What's inside (60 templates across 11 modules)
+## What's inside (60 templates across 11 modules, × 2 designs)
 
 | Module | Files | Covers |
 |---|---|---|
@@ -214,9 +234,11 @@ $(If Priority == 1
 
 ## Roadmap
 
-A second design — same modules, same statuses, a different visual language and HTML
-structure — is planned as a future sibling folder to `Spectrum/` at the repository root. See
-the "Known outstanding request" section of [`CLAUDE.md`](./CLAUDE.md) for the exact plan.
+A second design, **Ledger**, has shipped as a sibling folder to `Spectrum/` — same modules, same
+statuses, a different visual language (a letterhead masthead, metadata strip, and gridded record
+table instead of Spectrum's color-gradient badges). A third design, or a fuller Employee
+lifecycle (offboarding, role change, password reset), may follow later. See the "Known
+outstanding requests" section of [`CLAUDE.md`](./CLAUDE.md) for the exact plan.
 
 ## License
 
