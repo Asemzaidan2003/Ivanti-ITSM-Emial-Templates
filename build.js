@@ -25,6 +25,11 @@ const {
 
 const ROOT = __dirname;
 
+const bihgCard = (href, rel) =>
+  designCardHTML({ href, thumbSrc: `${rel}BIHG/01-Heritage/Incident/incident-new-ticket.html`, title: "BIHG Demo", desc: "BIHG-branded templates in five designs.", tags: ["15 templates", "5 designs"], cta: "Browse BIHG Demo" });
+const BIHGCARD_HOME = bihgCard("designs/bihg/index.html", "");
+const BIHGCARD_DESIGNS = bihgCard("bihg/index.html", "../");
+
 function write(relPath, contents) {
   const abs = path.join(ROOT, relPath);
   fs.mkdirSync(path.dirname(abs), { recursive: true });
@@ -61,7 +66,7 @@ function buildHome() {
         cta: `Browse ${d.name}`,
       }).replace('class="design-card reveal"', 'class="design-card reveal" style="text-decoration:none;"')
     )
-    .join("\n");
+    .join("\n") + BIHGCARD_HOME;
 
   const html =
     head +
@@ -103,7 +108,7 @@ function buildDesignsIndex() {
         cta: `Browse ${d.name}`,
       })
     )
-    .join("\n");
+    .join("\n") + BIHGCARD_DESIGNS;
 
   const html =
     head +
@@ -204,9 +209,45 @@ function buildStaticPage(name, title, description) {
   write(`${name}/index.html`, html);
 }
 
+// ------------------------------------------------------------ BIHG demo ---
+const BIHG_DESIGNS = ["01-Heritage", "02-Spectrum", "03-Ledger", "04-Executive", "05-Pulse"];
+const BIHG_TEMPLATES = [
+  { dir: "Incident", file: "incident-new-ticket.html", title: "Incident — New Ticket", desc: "Notifies the analyst a new incident ticket was created." },
+  { dir: "Approval", file: "approval-request-approver.html", title: "Approval — Request", desc: "Asks the approver to approve or reject a request." },
+  { dir: "Escalation", file: "escalation-level-2.html", title: "Escalation — Level 2", desc: "Escalates an overdue ticket to the next level." },
+];
+
+function buildBihg() {
+  const rel0 = "../../";
+  const head = headHTML({ rel: rel0, title: "BIHG Demo — Ivanti ITSM Email Templates", description: "BIHG-branded email template demo." });
+  const pageHead = pageHeadHTML({
+    breadcrumb: [{ label: "Home", href: `${rel0}index.html` }, { label: "Designs", href: `${rel0}designs/index.html` }],
+    currentLabel: "BIHG Demo",
+    h1: "BIHG Demo",
+    desc: "BIHG-branded templates in five designs: Heritage, Spectrum, Ledger, Executive and Pulse.",
+  });
+  const sections = BIHG_DESIGNS.map((d) => {
+    const cards = BIHG_TEMPLATES.map((t) => tplCardHTML({ src: `${rel0}BIHG/${d}/${t.dir}/${t.file}`, title: t.title, desc: t.desc })).join("\n");
+    return `      <div class="section-head reveal"><h2>${d.slice(3)}</h2></div>
+      <div class="design-grid tpl-grid">
+
+${cards}
+      </div>
+`;
+  }).join("\n");
+  write("designs/bihg/index.html", head + pageHead + `
+  <section class="section">
+    <div class="container">
+${sections}    </div>
+  </section>
+
+` + footerHTML() + footHTML(rel0));
+}
+
 function main() {
   buildHome();
   buildDesignsIndex();
+  buildBihg();
   buildDesignOverview("spectrum");
   buildDesignOverview("ledger");
   for (const designSlug of ["spectrum", "ledger"]) {
