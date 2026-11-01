@@ -25,10 +25,11 @@ const {
 
 const ROOT = __dirname;
 
-const bihgCard = (href, rel) =>
-  designCardHTML({ href, thumbSrc: `${rel}BIHG/01-Heritage/Incident/incident-new-ticket.html`, title: "BIHG Demo", desc: "BIHG-branded templates in five designs.", tags: ["15 templates", "5 designs"], cta: "Browse BIHG Demo" });
-const BIHGCARD_HOME = bihgCard("designs/bihg/index.html", "");
-const BIHGCARD_DESIGNS = bihgCard("bihg/index.html", "../");
+const demoCard = (b, href, rel) =>
+  designCardHTML({ href, thumbSrc: `${rel}${b.folder}/01-Heritage/Incident/incident-new-ticket.html`, title: `${b.name} Demo`, desc: `${b.name}-branded templates in five designs.`, tags: ["15 templates", "5 designs"], cta: `Browse ${b.name} Demo` });
+const BRANDS = [{ folder: "BIHG", slug: "bihg", name: "BIHG" }, { folder: "KSIA", slug: "ksia", name: "KSIA" }];
+const BIHGCARD_HOME = BRANDS.map((b) => demoCard(b, `designs/${b.slug}/index.html`, "")).join("");
+const BIHGCARD_DESIGNS = BRANDS.map((b) => demoCard(b, `${b.slug}/index.html`, "../")).join("");
 
 function write(relPath, contents) {
   const abs = path.join(ROOT, relPath);
@@ -217,17 +218,17 @@ const BIHG_TEMPLATES = [
   { dir: "Escalation", file: "escalation-level-2.html", title: "Escalation — Level 2", desc: "Escalates an overdue ticket to the next level." },
 ];
 
-function buildBihg() {
+function buildBihg(b) {
   const rel0 = "../../";
-  const head = headHTML({ rel: rel0, title: "BIHG Demo — Ivanti ITSM Email Templates", description: "BIHG-branded email template demo." });
+  const head = headHTML({ rel: rel0, title: `${b.name} Demo — Ivanti ITSM Email Templates`, description: `${b.name}-branded email template demo.` });
   const pageHead = pageHeadHTML({
     breadcrumb: [{ label: "Home", href: `${rel0}index.html` }, { label: "Designs", href: `${rel0}designs/index.html` }],
-    currentLabel: "BIHG Demo",
-    h1: "BIHG Demo",
-    desc: "BIHG-branded templates in five designs: Heritage, Spectrum, Ledger, Executive and Pulse.",
+    currentLabel: `${b.name} Demo`,
+    h1: `${b.name} Demo`,
+    desc: `${b.name}-branded templates in five designs: Heritage, Spectrum, Ledger, Executive and Pulse.`,
   });
   const sections = BIHG_DESIGNS.map((d) => {
-    const cards = BIHG_TEMPLATES.map((t) => tplCardHTML({ src: `${rel0}BIHG/${d}/${t.dir}/${t.file}`, title: t.title, desc: t.desc })).join("\n");
+    const cards = BIHG_TEMPLATES.map((t) => tplCardHTML({ src: `${rel0}${b.folder}/${d}/${t.dir}/${t.file}`, title: t.title, desc: t.desc })).join("\n");
     return `      <div class="section-head reveal"><h2>${d.slice(3)}</h2></div>
       <div class="design-grid tpl-grid">
 
@@ -235,7 +236,7 @@ ${cards}
       </div>
 `;
   }).join("\n");
-  write("designs/bihg/index.html", head + pageHead + `
+  write(`designs/${b.slug}/index.html`, head + pageHead + `
   <section class="section">
     <div class="container">
 ${sections}    </div>
@@ -247,7 +248,7 @@ ${sections}    </div>
 function main() {
   buildHome();
   buildDesignsIndex();
-  buildBihg();
+  BRANDS.forEach(buildBihg);
   buildDesignOverview("spectrum");
   buildDesignOverview("ledger");
   for (const designSlug of ["spectrum", "ledger"]) {
