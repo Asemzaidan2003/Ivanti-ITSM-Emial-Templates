@@ -40,10 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 1800);
   }
 
-  function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text);
-    }
+  function legacyCopy(text) {
     return new Promise(function (resolve, reject) {
       var ta = document.createElement("textarea");
       ta.value = text;
@@ -62,12 +59,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // The async Clipboard API is blocked inside cross-origin iframes (and
+  // rejects rather than being absent), so fall back to execCommand on failure.
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
+    }
+    return legacyCopy(text);
+  }
+
   document.querySelectorAll(".btn-copy").forEach(function (btn) {
     btn.addEventListener("click", function (evt) {
       evt.preventDefault();
       var src = btn.getAttribute("data-src");
-      fetch(src)
-        .then(function (res) { return res.text(); })
+      // no-store + cache-buster: always copy the latest published template, never a cached one.
+      fetch(src + (src.indexOf("?") < 0 ? "?" : "&") + "t=" + Date.now(), { cache: "no-store" })
+        .then(function (res) { if (!res.ok) throw new Error("fetch failed"); return res.text(); })
         .then(function (code) { return copyText(code); })
         .then(function () { flashButton(btn, "Copied ✓"); })
         .catch(function () { flashButton(btn, "Couldn’t copy"); });
