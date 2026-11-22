@@ -26,8 +26,8 @@ const {
 const ROOT = __dirname;
 
 const demoCard = (b, href, rel) =>
-  designCardHTML({ href, thumbSrc: `${rel}${b.folder}/01-Heritage/Incident/incident-new-ticket.html`, title: `${b.name} Demo`, desc: `${b.name}-branded templates in five designs.`, tags: ["15 templates", "5 designs"], cta: `Browse ${b.name} Demo` });
-const BRANDS = [{ folder: "BIHG", slug: "bihg", name: "BIHG" }, { folder: "KSIA", slug: "ksia", name: "KSIA" }];
+  designCardHTML({ href, thumbSrc: `${rel}${b.folder}/01-Heritage/Incident/incident-new-ticket.html`, title: `${b.name} Demo`, desc: `${b.name}-branded templates in five designs.`, tags: [b.tag || "15 templates", "5 designs"], cta: `Browse ${b.name} Demo` });
+const BRANDS = [{ folder: "BIHG", slug: "bihg", name: "BIHG", tag: "45 templates", full: true }, { folder: "KSIA", slug: "ksia", name: "KSIA" }];
 const BIHGCARD_HOME = BRANDS.map((b) => demoCard(b, `designs/${b.slug}/index.html`, "")).join("");
 const BIHGCARD_DESIGNS = BRANDS.map((b) => demoCard(b, `${b.slug}/index.html`, "../")).join("");
 
@@ -218,6 +218,46 @@ const BIHG_TEMPLATES = [
   { dir: "Escalation", file: "escalation-level-2.html", title: "Escalation — Level 2", desc: "Escalates an overdue ticket to the next level." },
 ];
 
+
+// BIHG full Spectrum set: Incident + Service Request, 15 notifications each.
+// [key incident, key SR, title, description]
+const BIHG_FULL = [
+  ["team-assignment", "team-assignment", "Team Assignment", "Tells a team a new ticket was assigned to its queue."],
+  ["logged", "logged", "Logged", "Confirms the ticket was logged."],
+  ["active", "active", "Active", "Tells the requester work has started."],
+  ["active-with-bihg", "active-with-bihg", "Active — With BIHG", "Tells the requester the BIHG support team is handling the ticket."],
+  ["waiting-for-customer", "waiting-for-customer", "Waiting for Customer", "Asks the requester for more information, with the waiting reason."],
+  ["waiting-for-third-party", "waiting-for-third-party", "Waiting for Third Party", "Tells the requester the ticket is paused for an external party."],
+  ["waiting-for-resolution", "waiting-for-fulfilment", "Waiting for Resolution / Fulfilment", "Tells the requester the ticket is in the waiting stage."],
+  ["resolved", "fulfilled", "Resolved / Fulfilled", "Confirms the outcome and explains the 3-day reopen window."],
+  ["closed", "closed", "Closed", "Final closure notice."],
+  ["cancelled", "cancelled", "Cancelled", "Confirms the cancellation, with the reason."],
+  ["escalation-1", "escalation-1", "Escalation — Level 1", "Escalates the ticket to the first level."],
+  ["escalation-2", "escalation-2", "Escalation — Level 2", "Escalates the ticket to the second level."],
+  ["escalation-3", "escalation-3", "Escalation — Level 3", "Escalates the ticket to the third level."],
+  ["response-sla-breach", "response-sla-breach", "Response SLA Breached", "Alerts the team the response target was breached."],
+  ["resolution-sla-breach", "fulfilment-sla-breach", "Resolution / Fulfilment SLA Breached", "Alerts the team the resolution or fulfilment target was breached."],
+];
+
+function bihgFullSections(b, rel0) {
+  const mods = [
+    { dir: "Incident", pre: "incident", i: 0, label: "Incident" },
+    { dir: "Service Request", pre: "service-request", i: 1, label: "Service Request" },
+  ];
+  return mods.map((m) => {
+    const cards = BIHG_FULL.map((t, n) => {
+      const file = `${String(n + 1).padStart(2, "0")}-${m.pre}-${t[m.i]}.html`;
+      return tplCardHTML({ src: `${rel0}${b.folder}/Spectrum-Full/${urlEncodeDir(m.dir)}/${file}`, previewSrc: `${rel0}${b.folder}/Spectrum-Full-Preview/${urlEncodeDir(m.dir)}/${file}`, title: `${m.label} — ${t[2]}`, desc: t[3] });
+    }).join("\n");
+    return `      <div class="section-head reveal"><h2>Spectrum — Full Set: ${m.label}</h2></div>
+      <div class="design-grid tpl-grid">
+
+${cards}
+      </div>
+`;
+  }).join("\n");
+}
+
 function buildBihg(b) {
   const rel0 = "../../";
   const head = headHTML({ rel: rel0, title: `${b.name} Demo — Ivanti ITSM Email Templates`, description: `${b.name}-branded email template demo.` });
@@ -239,7 +279,7 @@ ${cards}
   write(`designs/${b.slug}/index.html`, head + pageHead + `
   <section class="section">
     <div class="container">
-${sections}    </div>
+${sections}${b.full ? "\n" + bihgFullSections(b, rel0) : ""}    </div>
   </section>
 
 ` + footerHTML() + footHTML(rel0));

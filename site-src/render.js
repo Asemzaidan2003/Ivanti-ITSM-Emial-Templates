@@ -94,16 +94,17 @@ function designCardHTML({ href, thumbSrc, thumbTitle, title, desc, tags, cta }) 
 // Template card: thumb links out to the real file, actions row has
 // Open/Copy Code/View Code (Copy/View revealed only when embedded, via
 // site.js + site.css body.is-framed rule).
-function tplCardHTML({ src, title, desc }) {
+function tplCardHTML({ src, title, desc, previewSrc }) {
+  const view = previewSrc || src;
   return `        <div class="design-card reveal tpl-card">
-          <a class="thumb-link" href="${src}" target="_blank" rel="noopener">
-            <div class="thumb"><iframe src="${src}" tabindex="-1" scrolling="no" loading="lazy"></iframe></div>
+          <a class="thumb-link" href="${view}" target="_blank" rel="noopener">
+            <div class="thumb"><iframe src="${view}" tabindex="-1" scrolling="no" loading="lazy"></iframe></div>
           </a>
           <div class="body">
             <h3>${title}</h3>
             <p class="desc">${desc}</p>
             <div class="card-actions">
-              <a class="go" href="${src}" target="_blank" rel="noopener">Open ↗</a>
+              <a class="go" href="${view}" target="_blank" rel="noopener">Open ↗</a>
               <button type="button" class="icon-btn btn-copy" data-src="${src}">Copy Code</button>
               <button type="button" class="icon-btn btn-view" data-src="${src}">View Code</button>
             </div>
