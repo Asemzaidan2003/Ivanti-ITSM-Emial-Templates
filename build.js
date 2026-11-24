@@ -27,7 +27,7 @@ const ROOT = __dirname;
 
 const demoCard = (b, href, rel) =>
   designCardHTML({ href, thumbSrc: `${rel}${b.folder}/01-Heritage/Incident/incident-new-ticket.html`, title: `${b.name} Demo`, desc: `${b.name}-branded templates in five designs.`, tags: [b.tag || "15 templates", "5 designs"], cta: `Browse ${b.name} Demo` });
-const BRANDS = [{ folder: "BIHG", slug: "bihg", name: "BIHG", tag: "45 templates", full: true }, { folder: "KSIA", slug: "ksia", name: "KSIA" }];
+const BRANDS = [{ folder: "BIHG", slug: "bihg", name: "BIHG", tag: "75 templates", full: true }, { folder: "KSIA", slug: "ksia", name: "KSIA" }];
 const BIHGCARD_HOME = BRANDS.map((b) => demoCard(b, `designs/${b.slug}/index.html`, "")).join("");
 const BIHGCARD_DESIGNS = BRANDS.map((b) => demoCard(b, `${b.slug}/index.html`, "../")).join("");
 
@@ -239,7 +239,7 @@ const BIHG_FULL = [
   ["resolution-sla-breach", "fulfilment-sla-breach", "Resolution / Fulfilment SLA Breached", "Alerts the team the resolution or fulfilment target was breached."],
 ];
 
-function bihgFullSections(b, rel0) {
+function bihgFullSections(b, rel0, set = "Full") {
   const mods = [
     { dir: "Incident", pre: "incident", i: 0, label: "Incident" },
     { dir: "Service Request", pre: "service-request", i: 1, label: "Service Request" },
@@ -247,9 +247,9 @@ function bihgFullSections(b, rel0) {
   return mods.map((m) => {
     const cards = BIHG_FULL.map((t, n) => {
       const file = `${String(n + 1).padStart(2, "0")}-${m.pre}-${t[m.i]}.html`;
-      return tplCardHTML({ src: `${rel0}${b.folder}/Spectrum-Full/${urlEncodeDir(m.dir)}/${file}`, previewSrc: `${rel0}${b.folder}/Spectrum-Full-Preview/${urlEncodeDir(m.dir)}/${file}`, title: `${m.label} — ${t[2]}`, desc: t[3] });
+      return tplCardHTML({ src: `${rel0}${b.folder}/Spectrum-${set}/${urlEncodeDir(m.dir)}/${file}`, previewSrc: `${rel0}${b.folder}/Spectrum-${set}-Preview/${urlEncodeDir(m.dir)}/${file}`, title: `${m.label} — ${t[2]}`, desc: t[3] });
     }).join("\n");
-    return `      <div class="section-head reveal"><h2>Spectrum — Full Set: ${m.label}</h2></div>
+    return `      <div class="section-head reveal"><h2>Spectrum — ${set} Set: ${m.label}</h2></div>
       <div class="design-grid tpl-grid">
 
 ${cards}
@@ -279,7 +279,7 @@ ${cards}
   write(`designs/${b.slug}/index.html`, head + pageHead + `
   <section class="section">
     <div class="container">
-${sections}${b.full ? "\n" + bihgFullSections(b, rel0) : ""}    </div>
+${sections}${b.full ? "\n" + bihgFullSections(b, rel0) + "\n" + bihgFullSections(b, rel0, "Compact") : ""}    </div>
   </section>
 
 ` + footerHTML() + footHTML(rel0));
