@@ -22,16 +22,11 @@ This is a real, multi-page portfolio site (built by Asem Zaidan) hosted on GitHu
 single index file with everything crammed into it. Every section is its own directory with its
 own `index.html`:
 
-- **`/`** — homepage: hero, and a gallery of design cards with a live iframe preview each.
-- **`/designs/`** — the full designs gallery (same idea as the homepage section, as its own page).
-- **`/designs/spectrum/`** — Spectrum's overview: the color system, and a card grid of its 11
-  modules.
-- **`/designs/spectrum/<module>/`** — one real page per module (e.g.
-  `/designs/spectrum/incident/`), listing every template in that module as a card with a live
-  preview thumbnail and an "Open Template" link to the actual rendered file.
-- **`/designs/ledger/`** — Ledger's overview: the color system, and a card grid of its 11 modules.
-- **`/designs/ledger/<module>/`** — one real page per module (e.g. `/designs/ledger/incident/`),
-  same idea as Spectrum's module pages.
+- **`/`** — homepage: the customers (TjDeeD, BIHG, KSIA), each a card with a live preview.
+- **`/customers/<customer>/`** — the templates (designs) created for that customer.
+- **`/customers/<customer>/<template>/`** — that template's modules (e.g. `/customers/bihg/spectrum-compact/`).
+- **`/customers/<customer>/<template>/<module>/`** — one real page per module, listing every
+  notification as a card with a live preview, Open, Copy Code and View Code.
 - **`/docs/`** — how to bring these templates into your own Ivanti environment.
 - **`/about/`** — about the project and its author.
 
@@ -46,18 +41,7 @@ My Templates/
 ├── CLAUDE.md                     ← detailed design-system reference
 ├── index.html                      ← homepage (Pages entry point)
 ├── assets/                          ← shared site CSS/JS for every page below
-├── designs/
-│   ├── index.html                     ← designs gallery
-│   ├── spectrum/
-│   │   ├── index.html                   ← Spectrum overview + module grid
-│   │   ├── incident/index.html           ← one real page per module (×11)
-│   │   ├── service-request/index.html
-│   │   └── ...
-│   └── ledger/
-│       ├── index.html                   ← Ledger overview + module grid
-│       ├── incident/index.html           ← one real page per module (×11)
-│       ├── service-request/index.html
-│       └── ...
+├── customers/                      ← generated pages: customer → template → module
 ├── docs/index.html                  ← implementation guide
 ├── about/index.html                 ← about the project / author
 ├── Spectrum/                        ← design #1 (see below) — pure template content only
@@ -86,7 +70,7 @@ My Templates/
     └── Employee/
 ```
 
-`index.html`, `assets/`, `designs/`, `docs/`, and `about/` are the portfolio site — they exist
+`index.html`, `assets/`, `customers/`, `docs/`, and `about/` are the portfolio site — they exist
 purely to make the templates browsable and previewable on GitHub Pages, and are not part of any
 design's actual Ivanti template content. Each module folder under `Spectrum/` or `Ledger/`
 contains one `.html` file per notification/status — open any file directly in a browser to

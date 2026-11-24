@@ -1,9 +1,12 @@
 #!/usr/bin/env node
-// Regenerates every portal page (home, designs/, docs/, about/) from
-// site-src/data.js + site-src/render.js + site-src/pages/*.html.
+// Regenerates every portal page from site-src/data.js + site-src/render.js + site-src/pages/*.html.
 //
-// Does NOT touch Spectrum/ or Ledger/ — those are hand-authored,
-// Ivanti-pasteable email template files, a separate concern.
+// Site hierarchy:  Home (customers) -> customers/<customer>/ (its templates)
+//                  -> customers/<customer>/<template>/ (its modules)
+//                  -> customers/<customer>/<template>/<module>/ (the template cards)
+//
+// The Ivanti-pasteable template files (Spectrum/, Ledger/, BIHG/, KSIA/) are hand-authored
+// and never touched by this build.
 //
 // Usage: node build.js   (or: npm run build)
 
@@ -11,216 +14,23 @@ const fs = require("fs");
 const path = require("path");
 
 const { DESIGNS, MODULES } = require("./site-src/data");
-const {
-  urlEncodeDir,
-  headHTML,
-  footerHTML,
-  footHTML,
-  pageHeadHTML,
-  modulePillHTML,
-  swatchesHTML,
-  designCardHTML,
-  tplCardHTML,
-} = require("./site-src/render");
+const { urlEncodeDir, headHTML, footerHTML, footHTML, pageHeadHTML, modulePillHTML, swatchesHTML, designCardHTML, tplCardHTML } = require("./site-src/render");
 
 const ROOT = __dirname;
-
-const demoCard = (b, href, rel) =>
-  designCardHTML({ href, thumbSrc: `${rel}${b.folder}/01-Heritage/Incident/incident-new-ticket.html`, title: `${b.name} Demo`, desc: `${b.name}-branded templates in five designs.`, tags: [b.tag || "15 templates", "5 designs"], cta: `Browse ${b.name} Demo` });
-const BRANDS = [{ folder: "BIHG", slug: "bihg", name: "BIHG", tag: "75 templates", full: true }, { folder: "KSIA", slug: "ksia", name: "KSIA" }];
-const BIHGCARD_HOME = BRANDS.map((b) => demoCard(b, `designs/${b.slug}/index.html`, "")).join("");
-const BIHGCARD_DESIGNS = BRANDS.map((b) => demoCard(b, `${b.slug}/index.html`, "../")).join("");
-
-function write(relPath, contents) {
+const write = (relPath, contents) => {
   const abs = path.join(ROOT, relPath);
   fs.mkdirSync(path.dirname(abs), { recursive: true });
   fs.writeFileSync(abs, contents, "utf8");
   console.log("wrote", relPath);
-}
+};
+const up = (n) => "../".repeat(n);
+const page = (rel, title, description, pageHead, body) =>
+  headHTML({ rel, title: title.includes("Ivanti ITSM") ? title : `${title} — Ivanti ITSM Email Templates`, description }) + pageHead + "\n" +
+  `  <section class="section">\n    <div class="container">\n${body}\n    </div>\n  </section>\n\n` + footerHTML() + footHTML(rel);
+const grid = (cards, cls = "design-grid") => `      <div class="${cls}">\n\n${cards}\n      </div>`;
 
-const rel = (depth) => "../".repeat(depth);
-
-// ---------------------------------------------------------------- home ----
-function buildHome() {
-  const rel0 = "";
-  const head = headHTML({
-    rel: rel0,
-    title: "Ivanti ITSM Email Templates",
-    description: "Internal tool for browsing and copying bilingual Ivanti Neurons for ITSM email notification templates.",
-  });
-  const pageHead = pageHeadHTML({
-    h1: "Ivanti ITSM Email Templates",
-    desc:
-      "Internal template library for the Ivanti Neurons for ITSM notification system. Pick a\n" +
-      "        design below to browse its modules, preview each template, and grab the HTML to paste\n" +
-      "        into the notification editor.",
-  });
-  const cards = [DESIGNS.spectrum, DESIGNS.ledger]
-    .map((d) =>
-      designCardHTML({
-        href: `designs/${d.slug}/index.html`,
-        thumbSrc: `${d.folder}/Incident/incident-email-template.html`,
-        thumbTitle: `${d.name} preview`,
-        title: d.name,
-        desc: d.homeDesc,
-        tags: ["60 templates", "11 modules", "EN / AR bilingual"],
-        cta: `Browse ${d.name}`,
-      }).replace('class="design-card reveal"', 'class="design-card reveal" style="text-decoration:none;"')
-    )
-    .join("\n") + BIHGCARD_HOME;
-
-  const html =
-    head +
-    pageHead +
-    "\n" +
-    `  <section class="section" id="designs">\n    <div class="container">\n\n      <div class="design-grid">\n\n${cards}\n      </div>\n    </div>\n  </section>\n\n` +
-    footerHTML() +
-    footHTML(rel0);
-
-  write("index.html", html);
-}
-
-// ------------------------------------------------------------ designs/ ----
-function buildDesignsIndex() {
-  const rel0 = "../";
-  const head = headHTML({
-    rel: rel0,
-    title: "Designs — Ivanti ITSM Email Templates — Asem Zaidan",
-    description: "Every design in the Ivanti ITSM email template library, by Asem Zaidan.",
-  });
-  const pageHead = pageHeadHTML({
-    breadcrumb: [{ label: "Home", href: `${rel0}index.html` }],
-    currentLabel: "Designs",
-    h1: "Designs",
-    desc:
-      "Each design below is a complete, self-contained reinterpretation of the same 60 ITSM\n" +
-      "        notifications — same statuses, same content, different visual language and HTML\n" +
-      "        structure. Pick one to explore every module and template.",
-  });
-  const cards = [DESIGNS.spectrum, DESIGNS.ledger]
-    .map((d) =>
-      designCardHTML({
-        href: `${d.slug}/index.html`,
-        thumbSrc: `${rel0}${d.folder}/Incident/incident-email-template.html`,
-        thumbTitle: `${d.name} preview`,
-        title: d.name,
-        desc: d.homeDesc,
-        tags: ["60 templates", "11 modules", "EN / AR bilingual"],
-        cta: `Browse ${d.name}`,
-      })
-    )
-    .join("\n") + BIHGCARD_DESIGNS;
-
-  const html =
-    head +
-    pageHead +
-    "\n" +
-    `  <section class="section">\n    <div class="container">\n      <div class="design-grid">\n\n${cards}\n      </div>\n    </div>\n  </section>\n\n` +
-    footerHTML() +
-    footHTML(rel0);
-
-  write("designs/index.html", html);
-}
-
-// --------------------------------------------------- design overview page --
-function buildDesignOverview(designSlug) {
-  const design = DESIGNS[designSlug];
-  const rel0 = "../../";
-  const head = headHTML({
-    rel: rel0,
-    title: `${design.name} — Ivanti ITSM Email Templates — Asem Zaidan`,
-    description: `${design.name}: 60 bilingual Ivanti ITSM email templates across 11 modules, by Asem Zaidan.`,
-  });
-  const pageHead = pageHeadHTML({
-    breadcrumb: [
-      { label: "Home", href: `${rel0}index.html` },
-      { label: "Designs", href: `${rel0}designs/index.html` },
-    ],
-    currentLabel: design.name,
-    h1: design.name,
-    desc: design.pageDesc,
-    extraAfterDesc: swatchesHTML(designSlug),
-  });
-
-  const moduleCards = MODULES.map((m) =>
-    designCardHTML({
-      href: `${m.slug}/index.html`,
-      thumbSrc: `${rel0}${design.folder}/${urlEncodeDir(m.dir)}/${m.templates[0].file}`,
-      title: m.name,
-      desc: m.overviewDesc,
-      tags: [m.tag],
-      cta: `Browse ${m.name}`,
-    })
-  ).join("\n");
-
-  const html =
-    head +
-    pageHead +
-    "\n" +
-    `  <section class="section">\n    <div class="container">\n      <div class="section-head reveal">\n        <span class="badge">11 Modules</span>\n        <h2>Pick a module to browse its templates</h2>\n        <p>Every card below opens a dedicated page listing that module's templates, each with a live preview.</p>\n      </div>\n\n      <div class="design-grid">\n\n${moduleCards}\n      </div>\n    </div>\n  </section>\n\n` +
-    footerHTML() +
-    footHTML(rel0);
-
-  write(`designs/${designSlug}/index.html`, html);
-}
-
-// ---------------------------------------------------------- module page ---
-function buildModulePage(designSlug, module) {
-  const design = DESIGNS[designSlug];
-  const rel0 = "../../../";
-  const metaNoun = module.metaDescNoun || module.name;
-  const head = headHTML({
-    rel: rel0,
-    title: `${module.name} — ${design.name} — Ivanti ITSM Email Templates`,
-    description: `${metaNoun} email templates in the ${design.name} design, by Asem Zaidan.`,
-  });
-  const pageHead = pageHeadHTML({
-    breadcrumb: [
-      { label: "Home", href: `${rel0}index.html` },
-      { label: "Designs", href: `${rel0}designs/index.html` },
-      { label: design.name, href: `${rel0}designs/${design.slug}/index.html` },
-    ],
-    currentLabel: module.name,
-    h1: module.name,
-    desc: module.pageDesc,
-    extraBeforeH1: modulePillHTML(module.colors[designSlug], module.tag),
-  });
-
-  const cards = module.templates
-    .map((t) => tplCardHTML({ src: `${rel0}${design.folder}/${urlEncodeDir(module.dir)}/${t.file}`, title: t.title, desc: t.desc }))
-    .join("\n");
-
-  const html =
-    head +
-    pageHead +
-    "\n" +
-    `  <section class="section">\n    <div class="container">\n      <div class="design-grid tpl-grid">\n\n${cards}\n      </div>\n    </div>\n  </section>\n\n` +
-    footerHTML() +
-    footHTML(rel0);
-
-  write(`designs/${designSlug}/${module.slug}/index.html`, html);
-}
-
-// ------------------------------------------------------- docs / about -----
-function buildStaticPage(name, title, description) {
-  const rel0 = "../";
-  const head = headHTML({ rel: rel0, title, description });
-  const body = fs.readFileSync(path.join(ROOT, `site-src/pages/${name}-body.html`), "utf8");
-  const html = head + body + "\n\n" + footerHTML() + footHTML(rel0);
-  write(`${name}/index.html`, html);
-}
-
-// ------------------------------------------------------------ BIHG demo ---
-const BIHG_DESIGNS = ["01-Heritage", "02-Spectrum", "03-Ledger", "04-Executive", "05-Pulse"];
-const BIHG_TEMPLATES = [
-  { dir: "Incident", file: "incident-new-ticket.html", title: "Incident — New Ticket", desc: "Notifies the analyst a new incident ticket was created." },
-  { dir: "Approval", file: "approval-request-approver.html", title: "Approval — Request", desc: "Asks the approver to approve or reject a request." },
-  { dir: "Escalation", file: "escalation-level-2.html", title: "Escalation — Level 2", desc: "Escalates an overdue ticket to the next level." },
-];
-
-
-// BIHG full Spectrum set: Incident + Service Request, 15 notifications each.
-// [key incident, key SR, title, description]
+// ------------------------------------------------------------ catalogue ---
+// customer -> templates (designs) -> modules -> template cards
 const BIHG_FULL = [
   ["team-assignment", "team-assignment", "Team Assignment", "Tells a team a new ticket was assigned to its queue."],
   ["logged", "logged", "Logged", "Confirms the ticket was logged."],
@@ -239,66 +49,123 @@ const BIHG_FULL = [
   ["resolution-sla-breach", "fulfilment-sla-breach", "Resolution / Fulfilment SLA Breached", "Alerts the team the resolution or fulfilment target was breached."],
 ];
 
-function bihgFullSections(b, rel0, set = "Full") {
-  const mods = [
-    { dir: "Incident", pre: "incident", i: 0, label: "Incident" },
-    { dir: "Service Request", pre: "service-request", i: 1, label: "Service Request" },
-  ];
-  return mods.map((m) => {
-    const cards = BIHG_FULL.map((t, n) => {
-      const file = `${String(n + 1).padStart(2, "0")}-${m.pre}-${t[m.i]}.html`;
-      return tplCardHTML({ src: `${rel0}${b.folder}/Spectrum-${set}/${urlEncodeDir(m.dir)}/${file}`, previewSrc: `${rel0}${b.folder}/Spectrum-${set}-Preview/${urlEncodeDir(m.dir)}/${file}`, title: `${m.label} — ${t[2]}`, desc: t[3] });
-    }).join("\n");
-    return `      <div class="section-head reveal"><h2>Spectrum — ${set} Set: ${m.label}</h2></div>
-      <div class="design-grid tpl-grid">
+const bihgModule = (slug, name, dir, pre, i, desc) => ({
+  slug, name, tag: "15 templates", desc, color: "#007A4C",
+  cards: BIHG_FULL.map((t, n) => {
+    const file = `${String(n + 1).padStart(2, "0")}-${pre}-${t[i]}.html`;
+    return { src: `BIHG/Spectrum-Compact/${urlEncodeDir(dir)}/${file}`, previewSrc: `BIHG/Spectrum-Compact-Preview/${urlEncodeDir(dir)}/${file}`, title: t[2], desc: t[3] };
+  }),
+});
 
-${cards}
-      </div>
-`;
-  }).join("\n");
+const tjdeedTemplate = (d) => ({
+  slug: d.slug, name: d.name, desc: d.homeDesc, pageDesc: d.pageDesc, tags: ["60 templates", "11 modules", "EN / AR bilingual"],
+  thumb: `${d.folder}/Incident/incident-email-template.html`,
+  swatches: d.slug,
+  modules: MODULES.map((m) => ({
+    slug: m.slug, name: m.name, tag: m.tag, desc: m.overviewDesc, pageDesc: m.pageDesc, color: m.colors[d.slug],
+    cards: m.templates.map((t) => ({ src: `${d.folder}/${urlEncodeDir(m.dir)}/${t.file}`, title: t.title, desc: t.desc })),
+  })),
+});
+
+const KSIA_DESIGNS = [["01-Heritage", "Heritage"], ["02-Spectrum", "Spectrum"], ["03-Ledger", "Ledger"], ["04-Executive", "Executive"], ["05-Pulse", "Pulse"]];
+const KSIA_MODULES = [
+  ["incident", "Incident", "Incident", "incident-new-ticket.html", "New Ticket", "Notifies the analyst a new incident ticket was created."],
+  ["approval", "Approval", "Approval", "approval-request-approver.html", "Request", "Asks the approver to approve or reject a request."],
+  ["escalation", "Escalation", "Escalation", "escalation-level-2.html", "Level 2", "Escalates an overdue ticket to the next level."],
+];
+const ksiaTemplate = ([folder, name]) => ({
+  slug: name.toLowerCase(), name, desc: `${name} design — KSIA-branded demo notifications.`, pageDesc: `KSIA-branded ${name} design, bilingual (English / Arabic).`, tags: ["3 templates", "3 modules"],
+  thumb: `KSIA/${folder}/Incident/incident-new-ticket.html`,
+  modules: KSIA_MODULES.map(([slug, mname, dir, file, title, desc]) => ({
+    slug, name: mname, tag: "1 template", desc, pageDesc: desc, color: "#5E6366",
+    cards: [{ src: `KSIA/${folder}/${dir}/${file}`, title: `${mname} — ${title}`, desc }],
+  })),
+});
+
+const CUSTOMERS = [
+  {
+    slug: "tjdeed", name: "TjDeeD", desc: "The library's own reference designs — the full notification set across every ITSM module.",
+    templates: [tjdeedTemplate(DESIGNS.spectrum), tjdeedTemplate(DESIGNS.ledger)],
+  },
+  {
+    slug: "bihg", name: "BIHG", desc: "Binladin International Holding Group — branded Spectrum Compact notifications for Incident and Service Request.",
+    templates: [{
+      slug: "spectrum-compact", name: "Spectrum Compact",
+      desc: "English and Arabic side by side, one details box, one button, and the BIHG pattern bar at the bottom. Uses live Ivanti fields.",
+      pageDesc: "English on the left, Arabic on the right, one details box and one button. Every value is a live Ivanti field; the greeting uses the customer's name.",
+      tags: ["30 templates", "2 modules", "EN / AR side by side"],
+      thumb: "BIHG/Spectrum-Compact-Preview/Incident/03-incident-active.html",
+      modules: [
+        bihgModule("incident", "Incident", "Incident", "incident", 0, "Team assignment, lifecycle statuses, escalations and SLA breaches for incidents."),
+        bihgModule("service-request", "Service Request", "Service Request", "service-request", 1, "Team assignment, lifecycle statuses, escalations and SLA breaches for service requests."),
+      ],
+    }],
+  },
+  {
+    slug: "ksia", name: "KSIA", desc: "King Salman International Airport — branded demo notifications in five designs.",
+    templates: KSIA_DESIGNS.map(ksiaTemplate),
+  },
+];
+const countCards = (t) => t.modules.reduce((n, m) => n + m.cards.length, 0);
+
+// ---------------------------------------------------------------- pages ---
+function buildHome() {
+  const cards = CUSTOMERS.map((c) => designCardHTML({
+    href: `customers/${c.slug}/index.html`, thumbSrc: c.templates[0].thumb, title: c.name, desc: c.desc,
+    tags: [`${c.templates.length} template${c.templates.length > 1 ? "s" : ""}`, `${c.templates.reduce((n, t) => n + countCards(t), 0)} notifications`], cta: `Open ${c.name}`,
+  })).join("\n");
+  write("index.html", page("", "Ivanti ITSM Email Templates", "Bilingual Ivanti Neurons for ITSM email notification templates, organised by customer.",
+    pageHeadHTML({ h1: "Ivanti ITSM Email Templates", desc: "Pick a customer to browse the templates created for them, preview every notification, and copy the HTML into the Ivanti notification editor." }),
+    `      <div class="section-head reveal"><h2>Customers</h2></div>\n` + grid(cards)));
 }
 
-function buildBihg(b) {
-  const rel0 = "../../";
-  const head = headHTML({ rel: rel0, title: `${b.name} Demo — Ivanti ITSM Email Templates`, description: `${b.name}-branded email template demo.` });
-  const pageHead = pageHeadHTML({
-    breadcrumb: [{ label: "Home", href: `${rel0}index.html` }, { label: "Designs", href: `${rel0}designs/index.html` }],
-    currentLabel: `${b.name} Demo`,
-    h1: `${b.name} Demo`,
-    desc: `${b.name}-branded templates in five designs: Heritage, Spectrum, Ledger, Executive and Pulse.`,
-  });
-  const sections = BIHG_DESIGNS.map((d) => {
-    const cards = BIHG_TEMPLATES.map((t) => tplCardHTML({ src: `${rel0}${b.folder}/${d}/${t.dir}/${t.file}`, title: t.title, desc: t.desc })).join("\n");
-    return `      <div class="section-head reveal"><h2>${d.slice(3)}</h2></div>
-      <div class="design-grid tpl-grid">
-
-${cards}
-      </div>
-`;
-  }).join("\n");
-  write(`designs/${b.slug}/index.html`, head + pageHead + `
-  <section class="section">
-    <div class="container">
-${sections}${b.full ? "\n" + bihgFullSections(b, rel0) + "\n" + bihgFullSections(b, rel0, "Compact") : ""}    </div>
-  </section>
-
-` + footerHTML() + footHTML(rel0));
+function buildCustomer(c) {
+  const rel0 = up(2);
+  const cards = c.templates.map((t) => designCardHTML({
+    href: `${t.slug}/index.html`, thumbSrc: rel0 + t.thumb, title: t.name, desc: t.desc, tags: t.tags, cta: `Browse ${t.name}`,
+  })).join("\n");
+  write(`customers/${c.slug}/index.html`, page(rel0, c.name, `${c.name} email templates.`,
+    pageHeadHTML({ breadcrumb: [{ label: "Home", href: `${rel0}index.html` }], currentLabel: c.name, h1: c.name, desc: c.desc }),
+    `      <div class="section-head reveal"><h2>Templates</h2></div>\n` + grid(cards)));
 }
 
-function main() {
-  buildHome();
-  buildDesignsIndex();
-  BRANDS.forEach(buildBihg);
-  buildDesignOverview("spectrum");
-  buildDesignOverview("ledger");
-  for (const designSlug of ["spectrum", "ledger"]) {
-    for (const module of MODULES) {
-      buildModulePage(designSlug, module);
-    }
+function buildTemplate(c, t) {
+  const rel0 = up(3);
+  const cards = t.modules.map((m) => designCardHTML({
+    href: `${m.slug}/index.html`, thumbSrc: rel0 + (m.cards[0].previewSrc || m.cards[0].src), title: m.name, desc: m.desc, tags: [m.tag], cta: `Browse ${m.name}`,
+  })).join("\n");
+  write(`customers/${c.slug}/${t.slug}/index.html`, page(rel0, `${c.name} — ${t.name}`, `${c.name} ${t.name} email templates by module.`,
+    pageHeadHTML({
+      breadcrumb: [{ label: "Home", href: `${rel0}index.html` }, { label: c.name, href: `../index.html` }],
+      currentLabel: t.name, h1: `${c.name} — ${t.name}`, desc: t.pageDesc, extraAfterDesc: t.swatches ? swatchesHTML(t.swatches) : undefined,
+    }),
+    `      <div class="section-head reveal"><h2>Modules</h2></div>\n` + grid(cards)));
+}
+
+function buildModule(c, t, m) {
+  const rel0 = up(4);
+  const cards = m.cards.map((k) => tplCardHTML(Object.assign({}, k, { src: rel0 + k.src, previewSrc: k.previewSrc && rel0 + k.previewSrc }))).join("\n");
+  write(`customers/${c.slug}/${t.slug}/${m.slug}/index.html`, page(rel0, `${m.name} — ${c.name} ${t.name}`, `${m.name} email templates, ${c.name} ${t.name}.`,
+    pageHeadHTML({
+      breadcrumb: [{ label: "Home", href: `${rel0}index.html` }, { label: c.name, href: `../../index.html` }, { label: t.name, href: `../index.html` }],
+      currentLabel: m.name, h1: m.name, desc: m.pageDesc || m.desc, extraBeforeH1: modulePillHTML(m.color, m.tag),
+    }),
+    grid(cards, "design-grid tpl-grid")));
+}
+
+function buildStaticPage(name, title, description) {
+  const body = fs.readFileSync(path.join(ROOT, `site-src/pages/${name}-body.html`), "utf8");
+  write(`${name}/index.html`, headHTML({ rel: "../", title, description }) + body + "\n\n" + footerHTML() + footHTML("../"));
+}
+
+buildHome();
+for (const c of CUSTOMERS) {
+  buildCustomer(c);
+  for (const t of c.templates) {
+    buildTemplate(c, t);
+    for (const m of t.modules) buildModule(c, t, m);
   }
-  buildStaticPage("docs", "Docs — Ivanti ITSM Email Templates — Asem Zaidan", "How to use the Ivanti ITSM email templates in your own environment.");
-  buildStaticPage("about", "About — Ivanti ITSM Email Templates — Asem Zaidan", "About the Ivanti ITSM email template library and its author, Asem Zaidan.");
-  console.log("\nBuild complete: 28 pages written.");
 }
-
-main();
+buildStaticPage("docs", "Docs — Ivanti ITSM Email Templates — Asem Zaidan", "How to use the Ivanti ITSM email templates in your own environment.");
+buildStaticPage("about", "About — Ivanti ITSM Email Templates — Asem Zaidan", "About the Ivanti ITSM email template library and its author, Asem Zaidan.");
+console.log("\nBuild complete.");

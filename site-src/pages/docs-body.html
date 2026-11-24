@@ -13,7 +13,7 @@
 
         <h2 id="getting-started">Getting started</h2>
         <ol>
-          <li>Pick a design (currently <a href="../designs/spectrum/index.html">Spectrum</a>) and a module page for the notification you need.</li>
+          <li>Pick a design (currently <a href="../customers/tjdeed/spectrum/index.html">Spectrum</a>) and a module page for the notification you need.</li>
           <li>Open the template — either click through to it live, or find its file under <code>Spectrum/&lt;Module&gt;/&lt;file&gt;.html</code> in the repository.</li>
           <li>Copy the file's full HTML contents into the matching notification's HTML body field inside Ivanti Neurons for ITSM.</li>
           <li>Replace the placeholder logo URL, company name, and every <code>https://your-itsm-system.com/...</code> link with your own environment's values.</li>
@@ -55,11 +55,10 @@
 ├── README.md              ← project overview
 ├── CLAUDE.md               ← detailed design-system reference
 ├── index.html               ← this site's homepage
-├── designs/                   ← one folder per site page: designs gallery,
-│   └── spectrum/                per-design overview, per-module browsing
-│       ├── incident/
-│       ├── service-request/
-│       └── ...
+├── customers/                 ← customer → template → module browsing pages
+│   ├── tjdeed/  (spectrum, ledger)
+│   ├── bihg/    (spectrum-compact)
+│   └── ksia/    (heritage … pulse)
 ├── docs/, about/               ← this page, and the About page
 ├── assets/                     ← shared site CSS/JS
 └── Spectrum/                      ← design #1's actual template content
@@ -68,7 +67,7 @@
     └── ...</code></pre>
         <p>
           <code>Spectrum/</code> holds nothing but pure, Ivanti-pasteable template files — no site
-          chrome. Everything else (<code>index.html</code>, <code>designs/</code>,
+          chrome. Everything else (<code>index.html</code>, <code>customers/</code>,
           <code>docs/</code>, <code>about/</code>, <code>assets/</code>) exists only to make the
           templates browsable and previewable as a website.
         </p>
@@ -79,7 +78,7 @@
           readable before an email is even opened — amber for "needs your input", emerald for a
           good outcome, red for rejected/low-satisfaction, deepening toward maroon as an
           Escalation approaches an SLA breach. See the swatches on the
-          <a href="../designs/spectrum/index.html">Spectrum overview page</a> for the full key.
+          <a href="../customers/tjdeed/spectrum/index.html">Spectrum overview page</a> for the full key.
         </p>
 
       </div>
