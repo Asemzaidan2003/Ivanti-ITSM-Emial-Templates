@@ -57,6 +57,22 @@ const bihgModule = (slug, name, dir, pre, i, desc) => ({
   }),
 });
 
+
+// Remaining BIHG modules: read each file's English status + intro for its card.
+const bihgFolderModule = (dir, slug, name, desc) => {
+  const base = path.join(ROOT, "BIHG", "Spectrum-Compact", dir);
+  const files = fs.readdirSync(base).filter((f) => f.endsWith(".html")).sort();
+  return {
+    slug, name, tag: `${files.length} template${files.length > 1 ? "s" : ""}`, desc, color: "#007A4C",
+    cards: files.map((file) => {
+      const h = fs.readFileSync(path.join(base, file), "utf8");
+      const title = (h.match(/● ([^<]+)<\/span>/) || [, file])[1].trim();
+      const sub = (h.match(/color:#5E6366;">([^<]+)<\/p>/) || [, ""])[1].trim();
+      return { src: `BIHG/Spectrum-Compact/${urlEncodeDir(dir)}/${file}`, previewSrc: `BIHG/Spectrum-Compact-Preview/${urlEncodeDir(dir)}/${file}`, title, desc: sub };
+    }),
+  };
+};
+
 const tjdeedTemplate = (d) => ({
   slug: d.slug, name: d.name, desc: d.homeDesc, pageDesc: d.pageDesc, tags: ["60 templates", "11 modules", "EN / AR bilingual"],
   thumb: `${d.folder}/Incident/incident-email-template.html`,
@@ -88,16 +104,24 @@ const CUSTOMERS = [
     templates: [tjdeedTemplate(DESIGNS.spectrum), tjdeedTemplate(DESIGNS.ledger)],
   },
   {
-    slug: "bihg", name: "BIHG", desc: "Binladin International Holding Group — branded Spectrum Compact notifications for Incident and Service Request.",
+    slug: "bihg", name: "BIHG", desc: "Binladin International Holding Group — branded Spectrum Compact notifications across 10 modules.",
     templates: [{
       slug: "spectrum-compact", name: "Spectrum Compact",
       desc: "English and Arabic side by side, one details box, one button, and the BIHG pattern bar at the bottom. Uses live Ivanti fields.",
       pageDesc: "English on the left, Arabic on the right, one details box and one button. Every value is a live Ivanti field; the greeting uses the customer's name.",
-      tags: ["30 templates", "2 modules", "EN / AR side by side"],
+      tags: ["63 templates", "10 modules", "EN / AR side by side"],
       thumb: "BIHG/Spectrum-Compact-Preview/Incident/03-incident-active.html",
       modules: [
         bihgModule("incident", "Incident", "Incident", "incident", 0, "Team assignment, lifecycle statuses, escalations and SLA breaches for incidents."),
         bihgModule("service-request", "Service Request", "Service Request", "service-request", 1, "Team assignment, lifecycle statuses, escalations and SLA breaches for service requests."),
+        bihgFolderModule("Approval", "approval", "Approval", "Approval requests and outcomes for service requests."),
+        bihgFolderModule("Task Management", "task-management", "Task Management", "Task assignment, completion, overdue and reassignment notices."),
+        bihgFolderModule("Asset Management", "asset-management", "Asset Management", "Asset assignment, audit, warranty, retirement and return notices."),
+        bihgFolderModule("Knowledge Management", "knowledge-management", "Knowledge Management", "Knowledge article approval, publication, review and retirement."),
+        bihgFolderModule("Problem Management", "problem-management", "Problem Management", "Problem records, known errors and resolution."),
+        bihgFolderModule("Maintenance Operations", "maintenance-operations", "Maintenance Operations", "Scheduled maintenance notices, reminders, progress and completion."),
+        bihgFolderModule("Feedback", "feedback", "Feedback", "Satisfaction survey reminders, thank-you and low-score alerts."),
+        bihgFolderModule("Employee", "employee", "Employee", "Welcome email for a newly created user account."),
       ],
     }],
   },
